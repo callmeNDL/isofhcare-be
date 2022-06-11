@@ -15,6 +15,7 @@ module.exports = (sequelize, DataTypes) => {
     CMND: DataTypes.INTEGER,
     HoTen: DataTypes.STRING,
     NgaySinh: DataTypes.DATE,
+    DiaChi: DataTypes.STRING,
     GioiTinh: DataTypes.BOOLEAN,
     SDT: DataTypes.INTEGER,
     username: DataTypes.STRING,

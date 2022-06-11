@@ -2,7 +2,7 @@ import db from '../models/index'
 
 let getAboutPage = async (req, res) => {
   try {
-    let data = await db.User.findOne({
+    let user = await db.User.findOne({
       where: {
         id: '1'
       },
@@ -11,7 +11,29 @@ let getAboutPage = async (req, res) => {
         as: "roleData"
       }]
     });
-    res.status(200).json(data);
+    let users = await db.User.findAll({
+      include: [{
+        model: db.Role,
+        as: "roleData"
+      }]
+    });
+    let doctor = await db.Doctor.findOne({
+      where: {
+        id: '1'
+      },
+      include: [{
+        model: db.Department,
+        as: "departmentData"
+      }]
+    });
+    let doctors = await db.Doctor.findAll({
+
+      include: [{
+        model: db.Department,
+        as: "departmentData"
+      }]
+    });
+    res.status(200).json(doctors);
 
   } catch (error) {
     return (console.log("loi"))

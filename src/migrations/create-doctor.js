@@ -1,35 +1,38 @@
 'use strict';
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Users', {
+    await queryInterface.createTable('Doctors', {
+
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      MaUser: {
-        allowNull: false,
+      MaBS: {
         type: Sequelize.INTEGER,
-        unique: true
+        allowNull: false,
+        unique: true,
       },
-      MaChucVu: {
+      MaKhoa: {
         type: Sequelize.INTEGER,
         allowNull: false,
+        unique: true,
         references: {
-          model: "Roles",
-          key: 'MaChucVu'
+          model: "Departments",
+          key: 'MaKhoa'
         }
+      },
+      HoTen: {
+        type: Sequelize.STRING,
+        allowNull: false,
       },
       CMND: {
         type: Sequelize.INTEGER,
         allowNull: false,
         unique: true
       },
-      HoTen: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
+
       NgaySinh: {
         type: Sequelize.DATE
       },
@@ -41,6 +44,10 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
         unique: true
+      },
+      ChuyenNganh: {
+        type: Sequelize.STRING,
+        allowNull: false,
       },
       DiaChi: {
         type: Sequelize.STRING,
@@ -74,9 +81,11 @@ module.exports = {
         type: Sequelize.DATE,
         defaultValue: new Date()
       }
+    }, {
+      timestamps: false
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Users');
+    await queryInterface.dropTable('Doctors');
   }
 };
