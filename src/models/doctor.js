@@ -3,14 +3,14 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class User extends Model {
+  class Doctor extends Model {
 
     static associate(models) {
-      User.belongsTo(models.Role, { foreignKey: 'MaChucVu', as: 'roleData' });
+      Doctor.belongsTo(models.Role, { foreignKey: 'MaChucVu', as: 'roleData' });
     }
   }
-  User.init({
-    MaUser: DataTypes.STRING,
+  Doctor.init({
+    // MaUser: DataTypes.INTEGER,
     MaChucVu: DataTypes.INTEGER,
     CMND: DataTypes.INTEGER,
     HoTen: DataTypes.STRING,
@@ -23,7 +23,7 @@ module.exports = (sequelize, DataTypes) => {
     HinhAnh: DataTypes.STRING
   }, {
     sequelize,
-    modelName: 'User',
+    modelName: 'Doctor',
   });
-  return User;
+  return Doctor;
 };
