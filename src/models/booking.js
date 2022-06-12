@@ -6,7 +6,7 @@ module.exports = (sequelize, DataTypes) => {
   class Booking extends Model {
 
     static associate(models) {
-      // Booking.hasMany(models.User, { foreignKey: 'MaChucVu', as: 'roleData' });
+      Booking.hasMany(models.User, { foreignKey: 'MaUser', as: 'userData' });
     }
   }
   Booking.init({
