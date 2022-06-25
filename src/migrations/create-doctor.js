@@ -17,7 +17,6 @@ module.exports = {
       MaKhoa: {
         type: Sequelize.INTEGER,
         allowNull: false,
-        unique: true,
         references: {
           model: "Departments",
           key: 'MaKhoa'
@@ -52,7 +51,6 @@ module.exports = {
       DiaChi: {
         type: Sequelize.STRING,
         allowNull: false,
-        unique: true
       },
       username: {
         type: Sequelize.STRING,

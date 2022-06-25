@@ -16,7 +16,6 @@ module.exports = {
       MaBS: {
         type: Sequelize.INTEGER,
         allowNull: false,
-        unique: true,
         references: {
           model: "Doctors",
           key: 'MaBS'
@@ -25,7 +24,6 @@ module.exports = {
       MaUser: {
         type: Sequelize.INTEGER,
         allowNull: false,
-        unique: true,
         references: {
           model: "Users",
           key: 'MaUser'
