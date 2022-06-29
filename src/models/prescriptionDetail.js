@@ -1,3 +1,4 @@
+
 'use strict';
 const {
   Model
@@ -14,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
     MaThuoc: DataTypes.INTEGER,
     LieuLuong: DataTypes.INTEGER,
     SoLuong: DataTypes.INTEGER,
-    SoNgayUong: DataTypes.INTEGER,
+    SoNgayUong: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'PrescriptionDetail',

@@ -28,16 +28,20 @@ const departmentController = {
       })
     } else {
       let message = await departmentServices.deleteDepartment(req.body.id);
-      if (message.errCode !== "1") {
+      if (message.errCode === 1) {
         return res.status(200).json({
           errCode: 1,
           errMessage: "department is not delete"
         });
       }
       // console.log(message);
-      // return res.status(200).json(message);
+      return res.status(200).json(message);
     }
   },
+  handleUpdateDepartment: async (req, res) => {
+    let message = await departmentServices.updateDepartment(req.body);
+    return res.status(200).json(message)
+  }
 }
 
 module.exports = departmentController

@@ -1,47 +1,47 @@
-import bookingServices from './bookingService'
-const bookingController = {
-  handleGetAllBookings: async (req, res) => {
+import medicineServices from './medicineServices'
+const medicineController = {
+  handleGetAllMedicines: async (req, res) => {
     let id = req.query.id;
     if (!id) {
       return res.status(200).json({
         errCode: 1,
         errMessage: "Failed",
-        bookings: [],
+        medicines: [],
       });
     }
-    let bookings = await bookingServices.getAllBookings(id);
+    let medicines = await medicineServices.getAllMedicines(id);
     return res.status(200).json({
       errCode: 0,
       errMessage: "OK",
-      bookings,
+      medicines,
     });
   },
-  handleCreateNewBooking: async (req, res) => {
-    let message = await bookingServices.createNewBooking(req.body);
+  handleCreateNewMedicine: async (req, res) => {
+    let message = await medicineServices.createNewMedicine(req.body);
     return res.status(200).json(message);
   },
-  handleDeleteBooking: async (req, res) => {
+  handleDeleteMedicine: async (req, res) => {
     if (!req.body.id) {
       return res.status(200).json({
         errCode: 1,
         errMessage: 'Missing required parameters!',
       })
     } else {
-      let message = await bookingServices.deleteBooking(req.body.id);
+      let message = await medicineServices.deleteMedicine(req.body.id);
       if (message.errCode === 1) {
         return res.status(200).json({
           errCode: 1,
-          errMessage: `Booking ${req.body.id} is not delete`
+          errMessage: "Medicine is not delete"
         });
       } else {
         return res.status(200).json(message);
       }
     }
   },
-  handleUpdateBooking: async (req, res) => {
-    let message = await bookingServices.updateBooking(req.body);
+  handleUpdateMedicine: async (req, res) => {
+    let message = await medicineServices.updateMedicine(req.body);
     return res.status(200).json(message)
   }
 }
 
-module.exports = bookingController
+module.exports = medicineController

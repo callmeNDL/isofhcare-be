@@ -11,7 +11,6 @@ module.exports = {
       MaDT: {
         allowNull: false,
         type: Sequelize.INTEGER,
-        unique: true,
         references: {
           model: "Prescriptions",
           key: 'MaDT'
@@ -20,7 +19,6 @@ module.exports = {
       MaThuoc: {
         type: Sequelize.INTEGER,
         allowNull: false,
-        unique: true,
         references: {
           model: "Medicines",
           key: 'MaThuoc'

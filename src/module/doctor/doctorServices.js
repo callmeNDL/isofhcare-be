@@ -68,8 +68,6 @@ const doctorServices = {
         let checkEmail = await checkExist(data.email, "email");
         let checkCMND = await checkExist(data.CMND, "CMND");
         let checkUsername = await checkExist(data.username, "username");
-
-
         if (checkUsername === true) {
           resolve({
             errCode: 1,
@@ -124,6 +122,48 @@ const doctorServices = {
       }
     });
   },
+  updateDoctor: async (data) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+
+        if (!data.id) {
+          resolve({
+            errCode: 1,
+            errMessage: "Messing requited parameter"
+          });
+        }
+        let doctor = await db.Doctor.findOne({
+          where: { id: data.id },
+          raw: false,
+        });
+        if (doctor) {
+          doctor.MaKhoa = data.MaKhoa,
+            doctor.CMND = data.CMND,
+            doctor.HoTen = data.HoTen,
+            doctor.NgaySinh = data.NgaySinh,
+            doctor.DiaChi = data.DiaChi,
+            doctor.GioiTinh = data.GioiTinh,
+            doctor.SDT = data.SDT,
+            doctor.ChuyenNganh = data.ChuyenNganh,
+            doctor.email = data.email,
+            doctor.HinhAnh = data.HinhAnh,
+            await doctor.save();
+          resolve({
+            errCode: 0,
+            errMessage: "update doctor success!"
+          })
+        } else {
+          resolve({
+            errCode: 1,
+            errMessage: "User not found!"
+          });
+        }
+
+      } catch (e) {
+        reject(e);
+      }
+    })
+  },
   deleteDoctor: async (id) => {
     return new Promise(async (resolve, reject) => {
       //check id
@@ -140,15 +180,21 @@ const doctorServices = {
             errMessage: "doctor is not exist"
           })
         } else {
-          if (await doctor.destroy()) {
-            console.log("true");
-          } else {
-            console.log("false");
-          }
-          resolve({
-            errCode: 0,
-            errMessage: "The doctor is delete"
+          let booking = await db.Booking.findAll({
+            where: { MaBS: doctor.MaBS },
+            raw: false
           })
+          if (booking.length != 0) {
+            resolve({
+              errCode: 1,
+              errMessage: `Doctor ${doctor.MaBS}  has an appointment`
+            })
+          } else {
+            resolve({
+              errCode: 0,
+              errMessage: "The doctor is delete"
+            })
+          }
         }
       } catch (e) {
         reject({

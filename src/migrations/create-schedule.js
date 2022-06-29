@@ -11,7 +11,6 @@ module.exports = {
       MaBS: {
         type: Sequelize.INTEGER,
         allowNull: false,
-        unique: true,
         references: {
           model: "Doctors",
           key: 'MaBS'
@@ -20,7 +19,6 @@ module.exports = {
       MaPhong: {
         type: Sequelize.INTEGER,
         allowNull: false,
-        unique: true,
         references: {
           model: "Clinics",
           key: 'MaPhong'
@@ -29,7 +27,6 @@ module.exports = {
       CaKham: {
         type: Sequelize.INTEGER,
         allowNull: false,
-        unique: true,
         references: {
           model: "TimeFrame",
           key: 'CaKham'

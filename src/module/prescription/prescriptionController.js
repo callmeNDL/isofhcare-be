@@ -1,33 +1,33 @@
-import doctorServices from './doctorServices'
-const doctorController = {
-  handleGetAllDoctors: async (req, res) => {
+import prescriptionServices from './prescriptionServices'
+const prescriptionController = {
+  handleGetAllPrescriptions: async (req, res) => {
     let id = req.query.id;
     if (!id) {
       return res.status(200).json({
         errCode: 1,
         errMessage: "Failed",
-        doctors: [],
+        prescriptions: [],
       });
     }
-    let doctors = await doctorServices.getAllDoctors(id);
+    let prescriptions = await prescriptionServices.getAllPrescriptions(id);
     return res.status(200).json({
       errCode: 0,
       errMessage: "OK",
-      doctors,
+      prescriptions,
     });
   },
-  handleCreateNewDoctor: async (req, res) => {
-    let message = await doctorServices.createNewDoctor(req.body);
+  handleCreateNewPrescription: async (req, res) => {
+    let message = await prescriptionServices.createNewPrescription(req.body);
     return res.status(200).json(message);
   },
-  handleDeleteDoctor: async (req, res) => {
+  handleDeletePrescription: async (req, res) => {
     if (!req.body.id) {
       return res.status(200).json({
         errCode: 1,
         errMessage: 'Missing required parameters!',
       })
     } else {
-      let message = await doctorServices.deleteDoctor(req.body.id);
+      let message = await prescriptionServices.deletePrescription(req.body.id);
       if (message.errCode === 1) {
         return res.status(200).json({
           errCode: 1,
@@ -38,10 +38,10 @@ const doctorController = {
       }
     }
   },
-  handleUpdateDoctor: async (req, res) => {
-    let message = await doctorServices.updateDoctor(req.body);
+  handleUpdatePrescription: async (req, res) => {
+    let message = await prescriptionServices.updatePrescription(req.body);
     return res.status(200).json(message)
   }
 }
 
-module.exports = doctorController
+module.exports = prescriptionController

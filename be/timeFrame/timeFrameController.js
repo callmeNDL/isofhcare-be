@@ -1,34 +1,34 @@
-import doctorServices from './doctorServices'
-const doctorController = {
-  handleGetAllDoctors: async (req, res) => {
+import timeFrameServices from './timeFrameServices'
+const timeFrameController = {
+  handleGetAllTimeFrames: async (req, res) => {
     let id = req.query.id;
     if (!id) {
       return res.status(200).json({
         errCode: 1,
         errMessage: "Failed",
-        doctors: [],
+        timeFrames: [],
       });
     }
-    let doctors = await doctorServices.getAllDoctors(id);
+    let timeFrames = await timeFrameServices.getAllTimeFrame(id);
     return res.status(200).json({
       errCode: 0,
       errMessage: "OK",
-      doctors,
+      timeFrames,
     });
   },
-  handleCreateNewDoctor: async (req, res) => {
-    let message = await doctorServices.createNewDoctor(req.body);
+  handleCreateNewTimeFrame: async (req, res) => {
+    let message = await timeFrameServices.createNewTimeFrame(req.body);
     return res.status(200).json(message);
   },
-  handleDeleteDoctor: async (req, res) => {
+  handleDeleteTimeFrame: async (req, res) => {
     if (!req.body.id) {
       return res.status(200).json({
         errCode: 1,
         errMessage: 'Missing required parameters!',
       })
     } else {
-      let message = await doctorServices.deleteDoctor(req.body.id);
-      if (message.errCode === 1) {
+      let message = await timeFrameServices.deleteTimeFrame(req.body.id);
+      if (message.errCode == 1) {
         return res.status(200).json({
           errCode: 1,
           errMessage: message.errMessage
@@ -38,10 +38,10 @@ const doctorController = {
       }
     }
   },
-  handleUpdateDoctor: async (req, res) => {
-    let message = await doctorServices.updateDoctor(req.body);
+  handleUpdateTimeFrame: async (req, res) => {
+    let message = await timeFrameServices.updateTimeFrame(req.body);
     return res.status(200).json(message)
   }
 }
 
-module.exports = doctorController
+module.exports = timeFrameController

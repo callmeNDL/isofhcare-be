@@ -6,13 +6,12 @@ module.exports = (sequelize, DataTypes) => {
   class MedicalExamination extends Model {
 
     static associate(models) {
-      // MedicalExamination.hasMany(models.User, { foreignKey: 'MaChucVu', as: 'roleData' });
     }
   }
   MedicalExamination.init({
     MaPK: DataTypes.INTEGER,
     MaDL: DataTypes.INTEGER,
-    CaKham: DataTypes.INTEGER,
+    ThoiGian: DataTypes.TIME,
     NgayKham: DataTypes.DATE,
     KetQua: DataTypes.STRING,
   }, {

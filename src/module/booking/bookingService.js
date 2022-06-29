@@ -95,6 +95,45 @@ const bookingServices = {
         })
       }
     })
+  },
+  updateBooking: async (data) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+
+        if (!data.id) {
+          resolve({
+            errCode: 2,
+            errMessage: "Messing requited parameter"
+          });
+        }
+        let booking = await db.Booking.findOne({
+          where: { id: data.id },
+          raw: false,
+        });
+        if (booking) {
+          booking.MaDL = data.MaDL,
+            booking.MaUser = data.MaUser,
+            booking.MaBS = data.MaBS,
+            booking.ThoiGian = data.ThoiGian,
+            booking.NgayDL = data.NgayDL,
+            booking.TinhTrangBN = data.TinhTrangBN,
+            booking.TrangThai = data.TrangThai
+          await booking.save();
+          resolve({
+            errCode: 0,
+            errMessage: "update booking success!"
+          })
+        } else {
+          resolve({
+            errCode: 1,
+            errMessage: "Booking not found!"
+          });
+        }
+
+      } catch (e) {
+        reject(e);
+      }
+    })
   }
 }
 

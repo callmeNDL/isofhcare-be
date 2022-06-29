@@ -28,7 +28,14 @@ const userController = {
       })
     } else {
       let message = await userServices.deleteUser(req.body.id);
-      return res.status(200).json(message);
+      if (message.errCode === 1) {
+        return res.status(200).json({
+          errCode: 1,
+          errMessage: message.errMessage
+        });
+      } else {
+        return res.status(200).json(message);
+      }
     }
   },
   handleUpdateUser: async (req, res) => {

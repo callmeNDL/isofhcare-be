@@ -16,7 +16,6 @@ module.exports = {
       MaKhoa: {
         type: Sequelize.INTEGER,
         allowNull: false,
-        unique: true,
         references: {
           model: "Departments",
           key: 'MaKhoa'

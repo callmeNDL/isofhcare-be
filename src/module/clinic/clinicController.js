@@ -1,47 +1,47 @@
-import bookingServices from './bookingService'
-const bookingController = {
-  handleGetAllBookings: async (req, res) => {
+import clinicServices from './clinicServices'
+const clinicController = {
+  handleGetAllClinics: async (req, res) => {
     let id = req.query.id;
     if (!id) {
       return res.status(200).json({
         errCode: 1,
         errMessage: "Failed",
-        bookings: [],
+        clinics: [],
       });
     }
-    let bookings = await bookingServices.getAllBookings(id);
+    let clinics = await clinicServices.getAllClinics(id);
     return res.status(200).json({
       errCode: 0,
       errMessage: "OK",
-      bookings,
+      clinics,
     });
   },
-  handleCreateNewBooking: async (req, res) => {
-    let message = await bookingServices.createNewBooking(req.body);
+  handleCreateNewClinic: async (req, res) => {
+    let message = await clinicServices.createNewClinic(req.body);
     return res.status(200).json(message);
   },
-  handleDeleteBooking: async (req, res) => {
+  handleDeleteClinic: async (req, res) => {
     if (!req.body.id) {
       return res.status(200).json({
         errCode: 1,
         errMessage: 'Missing required parameters!',
       })
     } else {
-      let message = await bookingServices.deleteBooking(req.body.id);
+      let message = await clinicServices.deleteClinic(req.body.id);
       if (message.errCode === 1) {
         return res.status(200).json({
           errCode: 1,
-          errMessage: `Booking ${req.body.id} is not delete`
+          errMessage: message.errMessage
         });
       } else {
         return res.status(200).json(message);
       }
     }
   },
-  handleUpdateBooking: async (req, res) => {
-    let message = await bookingServices.updateBooking(req.body);
+  handleUpdateClinic: async (req, res) => {
+    let message = await clinicServices.updateClinic(req.body);
     return res.status(200).json(message)
   }
 }
 
-module.exports = bookingController
+module.exports = clinicController

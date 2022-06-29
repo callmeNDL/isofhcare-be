@@ -8,6 +8,7 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
+
       MaPK: {
         allowNull: false,
         type: Sequelize.INTEGER,
@@ -16,19 +17,14 @@ module.exports = {
       MaDL: {
         type: Sequelize.INTEGER,
         allowNull: false,
-        unique: true,
         references: {
           model: "Bookings",
           key: 'MaDL'
         }
       },
-      CaKham: {
-        type: Sequelize.INTEGER,
+      ThoiGian: {
+        type: Sequelize.TIME,
         allowNull: false,
-        references: {
-          model: "TimeFrame",
-          key: 'CaKham'
-        }
       },
       NgayKham: {
         type: Sequelize.DATE,

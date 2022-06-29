@@ -102,6 +102,39 @@ const departmentServices = {
         })
       }
     })
+  },
+  updateDepartment: async (data) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+
+        if (!data.id) {
+          resolve({
+            errCode: 2,
+            errMessage: "Messing requited parameter"
+          });
+        }
+        let department = await db.Department.findOne({
+          where: { id: data.id },
+          raw: false,
+        });
+        if (department) {
+          department.TenKhoa = data.TenKhoa,
+            department.MoTa = data.MoTa,
+            await department.save();
+          resolve({
+            errCode: 0,
+            errMessage: "update department success!"
+          })
+        } else {
+          resolve({
+            errCode: 1,
+            errMessage: "department not found!"
+          });
+        }
+      } catch (e) {
+        reject(e);
+      }
+    })
   }
 }
 

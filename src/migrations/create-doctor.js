@@ -31,7 +31,6 @@ module.exports = {
         allowNull: false,
         unique: true
       },
-
       NgaySinh: {
         type: Sequelize.DATE
       },

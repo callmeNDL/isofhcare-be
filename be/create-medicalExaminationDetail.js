@@ -11,7 +11,6 @@ module.exports = {
       MaPK: {
         type: Sequelize.INTEGER,
         allowNull: false,
-        unique: true,
         references: {
           model: "MedicalExamination",
           key: 'MaPk'

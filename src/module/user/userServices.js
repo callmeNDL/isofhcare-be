@@ -136,11 +136,22 @@ const userServices = {
             errMessage: "user is not exist"
           })
         } else {
-          await user.destroy();
-          resolve({
-            errCode: 0,
-            errMessage: "The user is delete"
+          let booking = await db.Booking.findAll({
+            where: { MaUser: user.MaUser },
+            raw: false
           })
+          if (booking.length != 0) {
+            resolve({
+              errCode: 1,
+              errMessage: `User ${user.MaUser}  has an appointment`
+            })
+          } else {
+            await user.destroy();
+            resolve({
+              errCode: 0,
+              errMessage: "The user is delete"
+            })
+          }
         }
       } catch (e) {
         reject({
