@@ -8,8 +8,13 @@ import roleRouter from '../module/role/roleRouter'
 import medicineRouter from '../module/medicine/medicineRouter'
 import clinicRouter from '../module/clinic/clinicRouter'
 import prescriptionRouter from '../module/prescription/prescriptionRouter'
-import prescriptionDetailRouter from '../module/prescriptionDetail/prescriptionDetailRouter'
+import prescriptionDetailRouter from '../module/prescriptionDetail/preDetailRouter'
 import medicalExaminationRouter from '../module/medicalExamination/medicalExaminationRouter'
+import timetableRouter from '../module/timeTable/timetableRouter'
+import scheduleRouter from '../module/schedule/scheduleRouter'
+import medicalTestRouter from '../module/medicalTEst/medicalTestRouter'
+import senMailRouter from '../module/senMail/senMailRouter'
+
 
 let router = express.Router();
 
@@ -31,6 +36,11 @@ let initWebRouters = (app) => {
     app.use('/api/prescription', prescriptionRouter);
     app.use('/api/prescriptionDetail', prescriptionDetailRouter);
     app.use('/api/medicalExamination', medicalExaminationRouter);
+    app.use('/api/timetable', timetableRouter);
+    app.use('/api/schedule', scheduleRouter);
+    app.use('/api/medicalTest', medicalTestRouter);
+    app.use('/api/senMail', senMailRouter);
+
 
 
     //api get user with login

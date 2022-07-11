@@ -42,6 +42,10 @@ const userServices = {
             attributes: {
               exclude: ["password"],
             },
+            include: [{
+              model: db.Role,
+              as: "roleData"
+            }]
           });
         }
         if (userId && userId !== "ALL") {
@@ -50,10 +54,59 @@ const userServices = {
             attributes: {
               exclude: ["password"],
             },
+            include: [{
+              model: db.Role,
+              as: "roleData"
+            }]
           });
         }
-
         resolve(users);
+      } catch (e) {
+        reject(e);
+      }
+    });
+  },
+  checkExistUser: async (data) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        // check email exist
+        let checkSDT = await checkExist(data.SDT, "SDT");
+        let checkUser = await checkExist(data.MaUser, "MaUser");
+        let checkEmail = await checkExist(data.email, "email");
+        let checkCMND = await checkExist(data.CMND, "CMND");
+        let checkUsername = await checkExist(data.username, "username");
+        if (checkUsername === true) {
+          resolve({
+            errCode: 1,
+            errMessage: "Username is exist. Please try Username other",
+          });
+        } if (checkUser === true) {
+          resolve({
+            errCode: 1,
+            errMessage: "User is exist. Please try MaUser other",
+          });
+        } if (checkSDT === true) {
+          resolve({
+            errCode: 1,
+            errMessage: "SDT is exist. Please try SDT other",
+          });
+        } if (checkEmail === true) {
+          resolve({
+            errCode: 1,
+            errMessage: "email is exist. Please try email other",
+          });
+        }
+        if (checkCMND === true) {
+          resolve({
+            errCode: 1,
+            errMessage: "CMND is exist. Please try CMND other",
+          });
+        } else {
+          resolve({
+            errCode: 0,
+            message: "User not exist",
+          });
+        }
       } catch (e) {
         reject(e);
       }
@@ -97,7 +150,6 @@ const userServices = {
         } else {
           const salt = await bcrypt.genSalt(10);
           let hashPassword = await bcrypt.hashSync(data.password, salt);
-          // console.log(data);
           await db.User.create({
             MaUser: data.MaUser,
             MaChucVu: data.MaChucVu,

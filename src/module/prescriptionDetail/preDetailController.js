@@ -1,37 +1,33 @@
-import userServices from './userServices'
-const userController = {
-  handleGetAllUsers: async (req, res) => {
+import preDetailServices from './preDetailServices'
+const preDetailController = {
+  handleGetAllPreDetails: async (req, res) => {
     let id = req.query.id;
     if (!id) {
       return res.status(200).json({
         errCode: 1,
         errMessage: "Failed",
-        users: [],
+        preDetails: [],
       });
     }
-    let users = await userServices.getAllUsers(id);
+    let preDetails = await preDetailServices.getAllPreDetails(id);
     return res.status(200).json({
       errCode: 0,
       errMessage: "OK",
-      users,
+      preDetails,
     });
   },
-  handleCheckExistUser: async (req, res) => {
-    let message = await userServices.checkExistUser(req.body);
+  handleCreateNewPreDetails: async (req, res) => {
+    let message = await preDetailServices.createNewPreDetail(req.body);
     return res.status(200).json(message);
   },
-  handleCreateNewUser: async (req, res) => {
-    let message = await userServices.createNewUser(req.body);
-    return res.status(200).json(message);
-  },
-  handleDeleteUser: async (req, res) => {
+  handleDeletePreDetails: async (req, res) => {
     if (!req.body.id) {
       return res.status(200).json({
         errCode: 1,
         errMessage: 'Missing required parameters!',
       })
     } else {
-      let message = await userServices.deleteUser(req.body.id);
+      let message = await preDetailServices.DeletePreDetail(req.body.id);
       if (message.errCode === 1) {
         return res.status(200).json({
           errCode: 1,
@@ -42,10 +38,10 @@ const userController = {
       }
     }
   },
-  handleUpdateUser: async (req, res) => {
-    let message = await userServices.updateUser(req.body);
+  handleUpdatePreDetails: async (req, res) => {
+    let message = await preDetailServices.updatePreDetail(req.body);
     return res.status(200).json(message)
   }
 }
 
-module.exports = userController
+module.exports = preDetailController

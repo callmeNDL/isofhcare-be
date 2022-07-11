@@ -12,12 +12,24 @@ const authController = {
     }
     let userData = await authServices.loginUser(username, password);
 
+    res.cookie("refreshToken", userData.refreshToken, {
+      httpOnly: true,
+      secure: false,
+      path: '/',
+      saneSite: "strict",
+    })
+
     return res.status(200).json({
       errCode: userData.errCode,
       message: userData.errMessage,
       user: userData.user ? userData.user : {},
-      accessToken: userData.accessToken
+      accessToken: userData.accessToken,
     });
+  },
+  handleRefreshToken: async (req, res) => {
+    // const refreshToken = req.cookies.refreshToken;
+    // console.log(refreshToken);
+    return res.status(200).json("refreshToken");
   }
 }
 

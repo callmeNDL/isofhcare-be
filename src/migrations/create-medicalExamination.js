@@ -1,43 +1,41 @@
 'use strict';
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('PreDetails', {
+    await queryInterface.createTable('MedicalExaminations', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      MaDT: {
+
+      MaPK: {
         allowNull: false,
         type: Sequelize.INTEGER,
-        references: {
-          model: "Prescriptions",
-          key: 'MaDT'
-        }
+        unique: true,
       },
-      MaThuoc: {
+      MaDL: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-          model: "Medicines",
-          key: 'MaThuoc'
+          model: "Bookings",
+          key: 'MaDL'
         }
       },
-      LieuLuong: {
+      CaKham: {
         type: Sequelize.INTEGER,
         allowNull: false,
+        references: {
+          model: "Timetables",
+          key: 'CaKham'
+        }
       },
-      SoLuong: {
-        type: Sequelize.INTEGER,
+      NgayKham: {
+        type: Sequelize.DATE,
         allowNull: false,
       },
-      SoNgayUong: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-      },
-      TongTienThuoc: {
-        type: Sequelize.INTEGER,
+      KetQua: {
+        type: Sequelize.STRING,
         allowNull: false,
       },
       createdAt: {
@@ -55,6 +53,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('PreDetails');
+    await queryInterface.dropTable('MedicalExaminations');
   }
 };

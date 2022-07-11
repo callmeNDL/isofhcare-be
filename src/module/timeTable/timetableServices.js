@@ -1,10 +1,10 @@
-import db from '../../src/models/index';
+import db from '../../models/index';
 let checkExist = (variable, filter) => {
   return new Promise(async (resolve, reject) => {
     try {
       let abc = {};
       abc[filter] = variable;
-      let data = await db.TimeFrame.findOne({
+      let data = await db.Timetables.findOne({
         where: abc,
       });
       if (data) {
@@ -17,27 +17,27 @@ let checkExist = (variable, filter) => {
     }
   });
 };
-const timeFrameServices = {
-  getAllTimeFrame: async (timeFrameID) => {
+const timetableServices = {
+  getAllTimetable: async (timetableID) => {
     return new Promise(async (resolve, reject) => {
       try {
-        let timeFrames = "";
-        if (timeFrameID === "ALL") {
-          timeFrames = await db.TimeFrame.findAll();
+        let timetables = "";
+        if (timetableID === "ALL") {
+          timetables = await db.Timetables.findAll();
         }
-        if (timeFrameID && timeFrameID !== "ALL") {
-          timeFrames = await db.TimeFrame.findOne({
-            where: { id: timeFrameID },
+        if (timetableID && timetableID !== "ALL") {
+          timetables = await db.Timetables.findOne({
+            where: { id: timetableID },
+
           });
         }
-
-        resolve(timeFrames);
+        resolve(timetables);
       } catch (e) {
         reject(e);
       }
     });
   },
-  createNewTimeFrame: (data) => {
+  createNewTimetable: (data) => {
     return new Promise(async (resolve, reject) => {
       try {
         let checkMaChucVu = await checkExist(data.MaChucVu, "MaChucVu");
@@ -55,7 +55,7 @@ const timeFrameServices = {
             errMessage: "TenChucVu is exist. Please try TenChucVu other",
           });
         } else {
-          await db.TimeFrame.create({
+          await db.Timetables.create({
             MaChucVu: data.MaChucVu,
             TenChucVu: data.TenChucVu,
           });
@@ -72,33 +72,33 @@ const timeFrameServices = {
       }
     });
   },
-  deleteTimeFrame: async (id) => {
+  deleteTimetable: async (id) => {
     return new Promise(async (resolve, reject) => {
       try {
-        let timeFrame = await db.TimeFrame.findOne({
+        let timetable = await db.Timetables.findOne({
           where: { id: id },
           raw: false
         })
-        if (!timeFrame) {
+        if (!timetable) {
           resolve({
             errCode: 1,
-            errMessage: "TimeFrame is not exist"
+            errMessage: "Timetable is not exist"
           })
         } else {
           let user = await db.User.findAll({
-            where: { MaChucVu: timeFrame.MaChucVu },
+            where: { MaChucVu: timetable.MaChucVu },
             raw: false
           })
           if (user.length != 0) {
             resolve({
               errCode: 1,
-              errMessage: `TimeFrame ${timeFrame.TenChucVu} has an user`
+              errMessage: `Timetable ${timetable.TenChucVu} has an user`
             })
           } else {
-            await timeFrame.destroy();
+            await timetable.destroy();
             resolve({
               errCode: 0,
-              errMessage: "The timeFrame is delete"
+              errMessage: "The timetable is delete"
             })
           }
         }
@@ -110,7 +110,7 @@ const timeFrameServices = {
       }
     })
   },
-  updateTimeFrame: async (data) => {
+  updateTimetable: async (data) => {
     return new Promise(async (resolve, reject) => {
       try {
 
@@ -120,17 +120,17 @@ const timeFrameServices = {
             errMessage: "Messing requited parameter"
           });
         }
-        let timeFrame = await db.TimeFrame.findOne({
+        let timetable = await db.Timetables.findOne({
           where: { id: data.id },
           raw: false,
         });
-        if (timeFrame) {
-          timeFrame.MaChucVu = data.MaChucVu,
-            timeFrame.TenChucVu = data.TenChucVu,
-            await timeFrame.save();
+        if (timetable) {
+          timetable.MaChucVu = data.MaChucVu,
+            timetable.TenChucVu = data.TenChucVu,
+            await timetable.save();
           resolve({
             errCode: 0,
-            errMessage: "update timeFrame success!"
+            errMessage: "update timetable success!"
           })
         } else {
           resolve({
@@ -146,4 +146,4 @@ const timeFrameServices = {
   }
 }
 
-module.exports = timeFrameServices
+module.exports = timetableServices

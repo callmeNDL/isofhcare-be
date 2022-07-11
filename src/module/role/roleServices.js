@@ -28,7 +28,6 @@ const roleServices = {
         if (roleID && roleID !== "ALL") {
           roles = await db.Role.findOne({
             where: { id: roleID },
-
           });
         }
 

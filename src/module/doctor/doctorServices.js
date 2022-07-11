@@ -59,6 +59,53 @@ const doctorServices = {
       }
     });
   },
+  checkExistDoctor: async (data) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        // check email exist
+        let checkSDT = await checkExist(data.SDT, "SDT");
+        let checkMaBS = await checkExist(data.MaBS, "MaBS");
+        let checkEmail = await checkExist(data.email, "email");
+        let checkCMND = await checkExist(data.CMND, "CMND");
+        let checkUsername = await checkExist(data.username, "username");
+        if (checkUsername === true) {
+          resolve({
+            errCode: 1,
+            errMessage: "Username is exist. Please try Username other",
+          });
+        } if (checkMaBS === true) {
+          resolve({
+            errCode: 1,
+            errMessage: "Doctor is exist. Please try MaDoctor other",
+          });
+        } if (checkSDT === true) {
+          resolve({
+            errCode: 1,
+            errMessage: "SDT is exist. Please try SDT other",
+          });
+        } if (checkEmail === true) {
+          resolve({
+            errCode: 1,
+            errMessage: "email is exist. Please try email other",
+          });
+        }
+        if (checkCMND === true) {
+          resolve({
+            errCode: 1,
+            errMessage: "CMND is exist. Please try CMND other",
+          });
+        }
+        else {
+          resolve({
+            errCode: 0,
+            message: "User not exist",
+          });
+        }
+      } catch (e) {
+        reject(e);
+      }
+    });
+  },
   createNewDoctor: async (data) => {
     return new Promise(async (resolve, reject) => {
       try {
@@ -166,9 +213,6 @@ const doctorServices = {
   },
   deleteDoctor: async (id) => {
     return new Promise(async (resolve, reject) => {
-      //check id
-      console.log("check id", id);
-
       try {
         let doctor = await db.Doctor.findOne({
           where: { id: id },
@@ -184,12 +228,22 @@ const doctorServices = {
             where: { MaBS: doctor.MaBS },
             raw: false
           })
-          if (booking.length != 0) {
+          let schedule = await db.Schedule.findAll({
+            where: { MaBS: doctor.MaBS },
+            raw: false
+          })
+          let medicalTests = await db.MedicalTests.findAll({
+            where: { MaBS: doctor.MaBS },
+            raw: false
+          })
+          if (booking.length !== 0 || schedule.length !== 0 || medicalTests.length !== 0) {
             resolve({
               errCode: 1,
-              errMessage: `Doctor ${doctor.MaBS}  has an appointment`
+              errMessage: "Bác sĩ không thể xoá vì đang có lịch khám"
             })
-          } else {
+          }
+          else {
+            await doctor.destroy();
             resolve({
               errCode: 0,
               errMessage: "The doctor is delete"

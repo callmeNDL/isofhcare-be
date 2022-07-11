@@ -6,7 +6,7 @@ module.exports = (sequelize, DataTypes) => {
   class Schedule extends Model {
 
     static associate(models) {
-      // Schedule.hasMany(models.User, { foreignKey: 'MaChucVu', as: 'roleData' });
+      Schedule.hasMany(models.Timetables, { foreignKey: 'MaBS', as: 'timeTableData' });
     }
   }
   Schedule.init({

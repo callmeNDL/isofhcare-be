@@ -16,6 +16,10 @@ const doctorController = {
       doctors,
     });
   },
+  handleCheckExistDoctor: async (req, res) => {
+    let message = await doctorServices.checkExistDoctor(req.body);
+    return res.status(200).json(message);
+  },
   handleCreateNewDoctor: async (req, res) => {
     let message = await doctorServices.createNewDoctor(req.body);
     return res.status(200).json(message);

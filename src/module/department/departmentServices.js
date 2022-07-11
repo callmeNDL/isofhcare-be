@@ -89,6 +89,9 @@ const departmentServices = {
             errMessage: "department is not exist1"
           })
         } else {
+          let doctor = await db.Doctor.findOne({
+
+          })
           await department.destroy();
           resolve({
             errCode: 0,

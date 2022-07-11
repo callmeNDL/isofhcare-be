@@ -4,21 +4,21 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class PrescriptionDetail extends Model {
+  class PreDetails extends Model {
 
     static associate(models) {
-      // PrescriptionDetail.hasMany(models.User, { foreignKey: 'MaChucVu', as: 'roleData' });
     }
   }
-  PrescriptionDetail.init({
+  PreDetails.init({
     MaDT: DataTypes.INTEGER,
     MaThuoc: DataTypes.INTEGER,
     LieuLuong: DataTypes.INTEGER,
     SoLuong: DataTypes.INTEGER,
-    SoNgayUong: DataTypes.INTEGER
+    SoNgayUong: DataTypes.INTEGER,
+    TongTienThuoc: DataTypes.INTEGER,
   }, {
     sequelize,
-    modelName: 'PrescriptionDetail',
+    modelName: 'PreDetails',
   });
-  return PrescriptionDetail;
+  return PreDetails;
 };

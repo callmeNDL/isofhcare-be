@@ -3,20 +3,21 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class MedicalExaminations extends Model {
+  class MedicalTests extends Model {
 
     static associate(models) {
     }
   }
-  MedicalExaminations.init({
+  MedicalTests.init({
+    MaBS: DataTypes.INTEGER,
     MaPK: DataTypes.INTEGER,
-    MaDL: DataTypes.INTEGER,
-    CaKham: DataTypes.INTEGER,
-    NgayKham: DataTypes.DATE,
+    TenPXN: DataTypes.STRING,
     KetQua: DataTypes.STRING,
+    NgayXN: DataTypes.DATE,
+    TrangThai: DataTypes.TEXT,
   }, {
     sequelize,
-    modelName: 'MedicalExaminations',
+    modelName: 'MedicalTests',
   });
-  return MedicalExaminations;
+  return MedicalTests;
 };

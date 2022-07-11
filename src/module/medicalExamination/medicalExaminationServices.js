@@ -4,7 +4,7 @@ let checkExist = (variable, filter) => {
     try {
       let abc = {};
       abc[filter] = variable;
-      let data = await db.MedicalExamination.findOne({
+      let data = await db.MedicalExaminations.findOne({
         where: abc,
       });
       if (data) {
@@ -23,10 +23,10 @@ const medicalExaminationServices = {
       try {
         let medicalExaminations = "";
         if (medicalExaminationID === "ALL") {
-          medicalExaminations = await db.Schedule.findAll();
+          medicalExaminations = await db.MedicalExaminations.findAll();
         }
         if (medicalExaminationID && medicalExaminationID !== "ALL") {
-          medicalExaminations = await db.MedicalExamination.findOne({
+          medicalExaminations = await db.MedicalExaminations.findOne({
             where: { id: medicalExaminationID },
 
           });
@@ -40,34 +40,37 @@ const medicalExaminationServices = {
   createNewMedicalExamination: (data) => {
     return new Promise(async (resolve, reject) => {
       try {
-        let checkMaChucVu = await checkExist(data.MaChucVu, "MaChucVu");
-        let checkTenChucVu = await checkExist(data.TenChucVu, "TenChucVu");
-
-        if (checkMaChucVu) {
+        let checkMaDL = await checkExist(data.MaDL, "MaDL");
+        let checkMaPK = await checkExist(data.MaPK, "MaPK");
+        if (checkMaPK) {
           resolve({
             errCode: 1,
-            errMessage: "MaChucVu is exist. Please try MaChucVu other",
+            errMessage: "MaPK is exist. Please try MaPK other",
           });
         }
-        if (checkTenChucVu) {
+        if (checkMaDL) {
           resolve({
             errCode: 1,
-            errMessage: "TenChucVu is exist. Please try TenChucVu other",
+            errMessage: "MaDL is exist. Please try MaDL other",
           });
-        } else {
-          await db.MedicalExamination.create({
-            MaChucVu: data.MaChucVu,
-            TenChucVu: data.TenChucVu,
+        }
+        else {
+          await db.MedicalExaminations.create({
+            MaPK: data.MaPK,
+            MaDL: data.MaDL,
+            CaKham: data.CaKham,
+            NgayKham: data.NgayKham,
+            KetQua: data.KetQua,
           });
           resolve({
             errCode: 0,
-            message: "Create complete",
+            message: "Thêm phiếu khám mới thành công",
           });
         }
       } catch (e) {
         reject({
           errCode: 1,
-          message: "Ma Chuc Vu đã tồn tại",
+          message: "Mã đặt lịch tồn tại",
         });
       }
     });
@@ -75,7 +78,7 @@ const medicalExaminationServices = {
   deleteMedicalExamination: async (id) => {
     return new Promise(async (resolve, reject) => {
       try {
-        let medicalExamination = await db.MedicalExamination.findOne({
+        let medicalExamination = await db.MedicalExaminations.findOne({
           where: { id: id },
           raw: false
         })
@@ -116,17 +119,18 @@ const medicalExaminationServices = {
 
         if (!data.id) {
           resolve({
-            errCode: 2,
+            errCode: 1,
             errMessage: "Messing requited parameter"
           });
         }
-        let medicalExamination = await db.MedicalExamination.findOne({
+        let medicalExamination = await db.MedicalExaminations.findOne({
           where: { id: data.id },
           raw: false,
         });
         if (medicalExamination) {
-          medicalExamination.MaChucVu = data.MaChucVu,
-            medicalExamination.TenChucVu = data.TenChucVu,
+          medicalExamination.CaKham = data.CaKham,
+            medicalExamination.KetQua = data.KetQua,
+            medicalExamination.NgayKham = data.NgayKham,
             await medicalExamination.save();
           resolve({
             errCode: 0,

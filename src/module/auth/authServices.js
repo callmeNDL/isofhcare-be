@@ -3,16 +3,34 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
 const authServices = {
+  generateAccessToken: (user) => {
+    return jwt.sign({
+      id: user.MaUser,
+      admin: user.MaChucVu
+    },
+      process.env.JWT_ACCESS_KEY,
+      { expiresIn: "2h" }
+    );
+  },
+  generateRefreshToken: (user) => {
+    return jwt.sign({
+      id: user.MaUser,
+      admin: user.MaChucVu
+    },
+      process.env.JWT_REFRESH_KEY,
+      { expiresIn: "100d" }
+    );
+  },
   loginUser: async (username, password) => {
     return new Promise(async (resolve, reject) => {
       try {
         const user = await db.User.findOne({
-          where: { username: username }
+          where: { username: username },
         })
         if (!user) {
           resolve({
             errCode: 1,
-            errMessage: "username not exit",
+            errMessage: "Username not exit",
           });
         } else {
           const validPassword = await bcrypt.compare(password, user.password);
@@ -22,27 +40,19 @@ const authServices = {
               errMessage: "Wrong password!",
             });
           } else {
-            if (user.MaChucVu == '2') {
-              var accessToken = jwt.sign({
-                id: user.MaUser,
-                admin: user.MaChucVu
+            var accessToken = authServices.generateAccessToken(user);
+            var refreshToken = authServices.generateRefreshToken(user);
+            const userResult = await db.User.findOne({
+              where: { id: user.id },
+              attributes: {
+                exclude: ["password"],
               },
-                process.env.JWT_ACCESS_KEY,
-                { expiresIn: "30s" }
-              )
-              resolve({
-                errCode: 0,
-                errMessage: "user data",
-                user: user, accessToken
-
-              });
-            } else {
-              resolve({
-                errCode: 1,
-                errMessage: "You are not an administrator in the system",
-              });
-            }
-
+            })
+            resolve({
+              errCode: 0,
+              errMessage: "user data",
+              user: userResult, accessToken, refreshToken
+            });
           }
         }
       } catch (e) {
