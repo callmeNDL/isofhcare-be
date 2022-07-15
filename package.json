@@ -23,7 +23,8 @@
     "pg": "8.7.1",
     "pg-hstore": "2.3.4",
     "redux": "^4.2.0",
-    "sequelize": "^6.17.0"
+    "sequelize": "^6.17.0",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "@babel/core": "^7.12.10",

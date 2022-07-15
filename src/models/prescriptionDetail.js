@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
   }
   PreDetails.init({
     MaDT: DataTypes.INTEGER,
-    MaThuoc: DataTypes.INTEGER,
+    MaThuoc: DataTypes.STRING,
     LieuLuong: DataTypes.INTEGER,
     SoLuong: DataTypes.INTEGER,
     SoNgayUong: DataTypes.INTEGER,

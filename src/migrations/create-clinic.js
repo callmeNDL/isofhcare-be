@@ -9,12 +9,12 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       MaPhong: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.CHAR(10),
         allowNull: false,
         unique: true,
       },
       MaKhoa: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.CHAR(10),
         allowNull: false,
         references: {
           model: "Departments",
@@ -22,7 +22,7 @@ module.exports = {
         }
       },
       TenPhongKham: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(100),
         allowNull: false,
       },
       ChucNang: {

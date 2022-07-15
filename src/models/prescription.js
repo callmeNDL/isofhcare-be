@@ -11,8 +11,8 @@ module.exports = (sequelize, DataTypes) => {
   }
   Prescription.init({
     MaDT: DataTypes.INTEGER,
-    MaBS: DataTypes.INTEGER,
-    MaUser: DataTypes.INTEGER,
+    MaBS: DataTypes.STRING,
+    MaUser: DataTypes.STRING,
     TinhTrang: DataTypes.STRING,
     LoiDanBS: DataTypes.STRING,
     NgayCap: DataTypes.DATE,

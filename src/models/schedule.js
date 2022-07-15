@@ -6,13 +6,12 @@ module.exports = (sequelize, DataTypes) => {
   class Schedule extends Model {
 
     static associate(models) {
-      Schedule.hasMany(models.Timetables, { foreignKey: 'MaBS', as: 'timeTableData' });
     }
   }
   Schedule.init({
-    MaBS: DataTypes.INTEGER,
-    MaPhong: DataTypes.INTEGER,
-    CaKham: DataTypes.INTEGER,
+    MaBS: DataTypes.STRING,
+    MaPhong: DataTypes.STRING,
+    CaKham: DataTypes.STRING,
     NgayKham: DataTypes.DATE
   }, {
     sequelize,

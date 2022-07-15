@@ -23,11 +23,23 @@ const roleServices = {
       try {
         let roles = "";
         if (roleID === "ALL") {
-          roles = await db.Role.findAll();
+          roles = await db.Role.findAll({
+            include: [{
+              model: db.User,
+            }],
+            raw: true,
+            nest: true
+          });
+
         }
         if (roleID && roleID !== "ALL") {
           roles = await db.Role.findOne({
             where: { id: roleID },
+            include: [{
+              model: db.User,
+            }],
+            raw: true,
+            nest: true
           });
         }
 

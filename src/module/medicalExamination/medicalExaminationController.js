@@ -24,7 +24,7 @@ const medicalExaminationController = {
     if (!req.body.id) {
       return res.status(200).json({
         errCode: 1,
-        errMessage: 'Missing required parameters!',
+        errMessage: 'Thiếu các thông số bắt buộc!',
       })
     } else {
       let message = await medicalExaminationServices.deleteMedicalExamination(req.body.id);

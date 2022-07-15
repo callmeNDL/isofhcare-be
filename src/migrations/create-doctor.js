@@ -2,7 +2,6 @@
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable('Doctors', {
-
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -10,12 +9,12 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       MaBS: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.CHAR(10),
         allowNull: false,
         unique: true,
       },
       MaKhoa: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.CHAR(10),
         allowNull: false,
         references: {
           model: "Departments",
@@ -23,7 +22,7 @@ module.exports = {
         }
       },
       HoTen: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(50),
         allowNull: false,
       },
       CMND: {
@@ -39,12 +38,12 @@ module.exports = {
         allowNull: false,
       },
       SDT: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.CHAR(10),
         allowNull: false,
         unique: true
       },
       ChuyenNganh: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(50),
         allowNull: false,
       },
       DiaChi: {
@@ -52,21 +51,22 @@ module.exports = {
         allowNull: false,
       },
       username: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(30),
         allowNull: false,
         unique: true
       },
       email: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(30),
         allowNull: false,
         unique: true
       },
       password: {
-        type: Sequelize.STRING,
+        type: Sequelize.CHAR(30),
         allowNull: false,
       },
       HinhAnh: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        defaultValue: "https://www.shoshinsha-design.com/wp-content/uploads/2020/05/noimage-580x440.png",
       },
       createdAt: {
         allowNull: false,

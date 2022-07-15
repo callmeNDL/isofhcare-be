@@ -5,14 +5,14 @@ const userController = {
     if (!id) {
       return res.status(200).json({
         errCode: 1,
-        errMessage: "Failed",
+        errMessage: "Nhập id.",
         users: [],
       });
     }
     let users = await userServices.getAllUsers(id);
     return res.status(200).json({
       errCode: 0,
-      errMessage: "OK",
+      errMessage: "Danh sách Users",
       users,
     });
   },
@@ -28,7 +28,7 @@ const userController = {
     if (!req.body.id) {
       return res.status(200).json({
         errCode: 1,
-        errMessage: 'Missing required parameters!',
+        errMessage: 'Thiếu các thông số bắt buộc!',
       })
     } else {
       let message = await userServices.deleteUser(req.body.id);

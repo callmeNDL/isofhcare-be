@@ -1,18 +1,6 @@
 import db from '../../models/index';
 import bcrypt from 'bcrypt';
 
-let hashUserPassword = (password) => {
-  return new Promise(async (resolve, reject) => {
-    try {
-      const salt = await bcrypt.genSalt(10);
-      let hashed = await bcrypt.hashSync(password, salt);
-      resolve(hashed);
-    } catch (e) {
-      reject(e);
-    }
-  });
-};
-
 let checkExist = (variable, filter) => {
   return new Promise(async (resolve, reject) => {
     try {
@@ -159,6 +147,7 @@ const doctorServices = {
             HinhAnh: data.HinhAnh,
             password: hashPassword
           });
+
           resolve({
             errCode: 0,
             message: "OK",
@@ -218,25 +207,26 @@ const doctorServices = {
           where: { id: id },
           raw: false
         })
+        console.log(doctor);
         if (!doctor) {
           resolve({
             errCode: 1,
-            errMessage: "doctor is not exist"
+            errMessage: "Không tồn tại bác sĩ"
           })
         } else {
           let booking = await db.Booking.findAll({
             where: { MaBS: doctor.MaBS },
             raw: false
           })
-          let schedule = await db.Schedule.findAll({
-            where: { MaBS: doctor.MaBS },
-            raw: false
-          })
-          let medicalTests = await db.MedicalTests.findAll({
-            where: { MaBS: doctor.MaBS },
-            raw: false
-          })
-          if (booking.length !== 0 || schedule.length !== 0 || medicalTests.length !== 0) {
+          // let schedule = await db.Schedule.findAll({
+          //   where: { MaBS: doctor.MaBS },
+          //   raw: false
+          // })
+          // let medicalTests = await db.MedicalTests.findAll({
+          //   where: { MaBS: doctor.MaBS },
+          //   raw: false
+          // })
+          if (booking.length !== 0) {
             resolve({
               errCode: 1,
               errMessage: "Bác sĩ không thể xoá vì đang có lịch khám"

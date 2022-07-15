@@ -11,11 +11,11 @@ module.exports = {
 
       MaPK: {
         allowNull: false,
-        type: Sequelize.INTEGER,
+        type: Sequelize.CHAR(10),
         unique: true,
       },
       MaDL: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.CHAR(10),
         allowNull: false,
         references: {
           model: "Bookings",
@@ -23,7 +23,7 @@ module.exports = {
         }
       },
       CaKham: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.CHAR(10),
         allowNull: false,
         references: {
           model: "Timetables",

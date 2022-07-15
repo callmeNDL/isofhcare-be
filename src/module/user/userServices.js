@@ -42,10 +42,9 @@ const userServices = {
             attributes: {
               exclude: ["password"],
             },
-            include: [{
-              model: db.Role,
-              as: "roleData"
-            }]
+            include: { model: db.Role },
+            raw: true,
+            nest: true
           });
         }
         if (userId && userId !== "ALL") {
@@ -56,8 +55,9 @@ const userServices = {
             },
             include: [{
               model: db.Role,
-              as: "roleData"
-            }]
+            }],
+            raw: true,
+            nest: true
           });
         }
         resolve(users);
@@ -78,33 +78,33 @@ const userServices = {
         if (checkUsername === true) {
           resolve({
             errCode: 1,
-            errMessage: "Username is exist. Please try Username other",
+            errMessage: "Tên đăng nhập đã tồn tại.",
           });
         } if (checkUser === true) {
           resolve({
             errCode: 1,
-            errMessage: "User is exist. Please try MaUser other",
+            errMessage: "Mã User đã tồn tại",
           });
         } if (checkSDT === true) {
           resolve({
             errCode: 1,
-            errMessage: "SDT is exist. Please try SDT other",
+            errMessage: "SDT đã tồn tại.",
           });
         } if (checkEmail === true) {
           resolve({
             errCode: 1,
-            errMessage: "email is exist. Please try email other",
+            errMessage: "email đã tồn tại.",
           });
         }
         if (checkCMND === true) {
           resolve({
             errCode: 1,
-            errMessage: "CMND is exist. Please try CMND other",
+            errMessage: "CMND đã tồn tại.",
           });
         } else {
           resolve({
             errCode: 0,
-            message: "User not exist",
+            message: "Không tồn tại user",
           });
         }
       } catch (e) {
@@ -124,32 +124,33 @@ const userServices = {
         if (checkUsername === true) {
           resolve({
             errCode: 1,
-            errMessage: "Username is exist. Please try Username other",
+            errMessage: "Username đã tồn tại.",
           });
         } if (checkUser === true) {
           resolve({
             errCode: 1,
-            errMessage: "User is exist. Please try MaUser other",
+            errMessage: "User đã tồn tại.",
           });
         } if (checkSDT === true) {
           resolve({
             errCode: 1,
-            errMessage: "SDT is exist. Please try SDT other",
+            errMessage: "SDT đã tồn tại.",
           });
         } if (checkEmail === true) {
           resolve({
             errCode: 1,
-            errMessage: "email is exist. Please try email other",
+            errMessage: "email đã tồn tại.",
           });
         }
         if (checkCMND === true) {
           resolve({
             errCode: 1,
-            errMessage: "CMND is exist. Please try CMND other",
+            errMessage: "CMND đã tồn tại.",
           });
         } else {
           const salt = await bcrypt.genSalt(10);
           let hashPassword = await bcrypt.hashSync(data.password, salt);
+          console.log(data);
           await db.User.create({
             MaUser: data.MaUser,
             MaChucVu: data.MaChucVu,
@@ -166,11 +167,14 @@ const userServices = {
           });
           resolve({
             errCode: 0,
-            message: "OK",
+            message: "Tại mới thành công",
           });
         }
       } catch (e) {
-        reject(e);
+        reject({
+          errCode: 0,
+          message: "Tại mới thất bại",
+        });
       }
     });
   },
@@ -195,20 +199,20 @@ const userServices = {
           if (booking.length != 0) {
             resolve({
               errCode: 1,
-              errMessage: `User ${user.MaUser}  has an appointment`
+              errMessage: `User ${user.MaUser} đang có lịch khám`
             })
           } else {
             await user.destroy();
             resolve({
               errCode: 0,
-              errMessage: "The user is delete"
+              errMessage: "Xoá thành công."
             })
           }
         }
       } catch (e) {
         reject({
           errCode: 1,
-          errMessage: "user is not delete"
+          errMessage: "Không thể xoá User"
         })
       }
     })
@@ -216,7 +220,6 @@ const userServices = {
   updateUser: async (data) => {
     return new Promise(async (resolve, reject) => {
       try {
-
         if (!data.id) {
           resolve({
             errCode: 2,
@@ -248,9 +251,11 @@ const userServices = {
             errMessage: "User not found!"
           });
         }
-
       } catch (e) {
-        reject(e);
+        reject({
+          errCode: 1,
+          errMessage: "Cập nhật thất bại"
+        });
       }
     })
   }

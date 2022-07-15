@@ -63,6 +63,7 @@ const medicineServices = {
             CongDung: data.CongDung,
             GiaBan: data.GiaBan,
             DonVi: data.DonVi,
+            SoLuong: data.SoLuong,
             NgaySX: data.NgaySX,
             HanSuDung: data.HanSuDung,
           });

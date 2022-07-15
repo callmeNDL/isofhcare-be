@@ -5,14 +5,14 @@ const bookingController = {
     if (!id) {
       return res.status(200).json({
         errCode: 1,
-        errMessage: "Failed",
+        errMessage: "Nhập id bác sĩ",
         bookings: [],
       });
     }
     let bookings = await bookingServices.getAllBookings(id);
     return res.status(200).json({
-      errCode: 0,
-      errMessage: "OK",
+      errCode: bookings.errCode,
+      errMessage: bookings.errMessage,
       bookings,
     });
   },
@@ -24,7 +24,7 @@ const bookingController = {
     if (!req.body.id) {
       return res.status(200).json({
         errCode: 1,
-        errMessage: 'Missing required parameters!',
+        errMessage: 'Thiếu các thông số bắt buộc!',
       })
     } else {
       let message = await bookingServices.deleteBooking(req.body.id);
@@ -41,6 +41,37 @@ const bookingController = {
   handleUpdateBooking: async (req, res) => {
     let message = await bookingServices.updateBooking(req.body);
     return res.status(200).json(message)
+  },
+  handleGetByUser: async (req, res) => {
+    let userID = req.query.MaUser;
+    if (!userID) {
+      return res.status(200).json({
+        errCode: 1,
+        errMessage: "Nhâp mã User",
+        bookings: [],
+      });
+    }
+    let bookings = await bookingServices.getBookingByUser(userID);
+    return res.status(200).json({
+      errCode: bookings.errCode,
+      errMessage: bookings.errMessage,
+      bookings: bookings.bookings,
+    });
+  },
+  handleVerifyBooking: async (req, res) => {
+    try {
+      let info = await bookingServices.verifyBooking(req.body)
+      return res.status(200).json({
+        errCode: info.errCode,
+        errMessage: info.errMessage
+      })
+    } catch (error) {
+      console.log(error);
+      return res.status(200).json({
+        errCode: 1,
+        errMessage: "Lỗi server!!!"
+      })
+    }
   }
 }
 

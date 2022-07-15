@@ -9,7 +9,7 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       MaPK: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.CHAR(10),
         allowNull: false,
         references: {
           model: "MedicalExaminations",
@@ -17,7 +17,7 @@ module.exports = {
         }
       },
       MaPhong: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.CHAR(10),
         allowNull: false,
         references: {
           model: "Clinics",

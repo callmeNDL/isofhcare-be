@@ -10,11 +10,11 @@ module.exports = {
       },
       MaDL: {
         allowNull: false,
-        type: Sequelize.INTEGER,
+        type: Sequelize.CHAR(10),
         unique: true,
       },
       MaBS: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.CHAR(10),
         allowNull: false,
         references: {
           model: "Doctors",
@@ -22,7 +22,7 @@ module.exports = {
         }
       },
       MaUser: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.CHAR(10),
         allowNull: false,
         references: {
           model: "Users",
@@ -42,9 +42,12 @@ module.exports = {
         allowNull: false,
       },
       TrangThai: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(20),
         allowNull: false,
         defaultValue: "new"
+      },
+      token: {
+        type: Sequelize.STRING,
       },
       createdAt: {
         allowNull: false,

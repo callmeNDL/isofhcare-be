@@ -9,7 +9,7 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       MaBS: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.CHAR(10),
         allowNull: false,
         references: {
           model: "Doctors",
@@ -17,7 +17,7 @@ module.exports = {
         }
       },
       MaPK: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.CHAR(10),
         allowNull: false,
         references: {
           model: "MedicalExaminations",
@@ -36,7 +36,7 @@ module.exports = {
         type: Sequelize.DATE
       },
       TrangThai: {
-        type: Sequelize.TEXT,
+        type: Sequelize.CHAR(20),
         allowNull: false,
       },
       createdAt: {

@@ -4,14 +4,12 @@ const {
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Role extends Model {
-
     static associate(models) {
-      Role.hasMany(models.User, { foreignKey: 'MaChucVu', as: 'roleData' });
+      Role.hasMany(models.User, { foreignKey: 'MaChucVu', targetKey: 'MaChucVu', });
     }
   }
   Role.init({
-    // MaChucVu: DataTypes.INTEGER,
-    MaChucVu: DataTypes.INTEGER,
+    MaChucVu: DataTypes.STRING,
     TenChucVu: DataTypes.STRING,
   }, {
     sequelize,

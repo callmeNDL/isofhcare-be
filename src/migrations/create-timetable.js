@@ -9,7 +9,7 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       CaKham: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.CHAR(10),
         allowNull: false,
         unique: true,
       },

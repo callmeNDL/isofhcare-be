@@ -24,7 +24,7 @@ const prescriptionController = {
     if (!req.body.id) {
       return res.status(200).json({
         errCode: 1,
-        errMessage: 'Missing required parameters!',
+        errMessage: 'Thiếu các thông số bắt buộc!',
       })
     } else {
       let message = await prescriptionServices.deletePrescription(req.body.id);

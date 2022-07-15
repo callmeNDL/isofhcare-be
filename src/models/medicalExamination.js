@@ -9,9 +9,9 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   MedicalExaminations.init({
-    MaPK: DataTypes.INTEGER,
-    MaDL: DataTypes.INTEGER,
-    CaKham: DataTypes.INTEGER,
+    MaPK: DataTypes.STRING,
+    MaDL: DataTypes.STRING,
+    CaKham: DataTypes.STRING,
     NgayKham: DataTypes.DATE,
     KetQua: DataTypes.STRING,
   }, {

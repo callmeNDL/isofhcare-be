@@ -9,7 +9,7 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       MaThuoc: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.CHAR(20),
         allowNull: false,
         unique: true,
       },
@@ -26,6 +26,14 @@ module.exports = {
         allowNull: false,
       },
       GiaBan: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+      },
+      DonVi: {
+        type: Sequelize.STRING(30),
+        allowNull: false,
+      },
+      SoLuong: {
         type: Sequelize.INTEGER,
         allowNull: false,
       },

@@ -9,7 +9,7 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       MaBS: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.CHAR(10),
         allowNull: false,
         references: {
           model: "Doctors",
@@ -17,7 +17,7 @@ module.exports = {
         }
       },
       MaPhong: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.CHAR(10),
         allowNull: false,
         references: {
           model: "Clinics",
@@ -25,7 +25,7 @@ module.exports = {
         }
       },
       CaKham: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.CHAR(10),
         allowNull: false,
         references: {
           model: "Timetables",

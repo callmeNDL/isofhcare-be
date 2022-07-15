@@ -9,12 +9,12 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       MaUser: {
+        type: Sequelize.CHAR(10),
         allowNull: false,
-        type: Sequelize.INTEGER,
         unique: true
       },
       MaChucVu: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.CHAR(10),
         allowNull: false,
         references: {
           model: "Roles",
@@ -31,7 +31,8 @@ module.exports = {
         allowNull: false,
       },
       NgaySinh: {
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
+        allowNull: false,
       },
       GioiTinh: {
         type: Sequelize.BOOLEAN,
@@ -47,12 +48,12 @@ module.exports = {
         allowNull: false,
       },
       username: {
-        type: Sequelize.STRING,
+        type: Sequelize.CHAR(30),
         allowNull: false,
         unique: true
       },
       email: {
-        type: Sequelize.STRING,
+        type: Sequelize.CHAR(30),
         allowNull: false,
         unique: true
       },
@@ -61,7 +62,8 @@ module.exports = {
         allowNull: false,
       },
       HinhAnh: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        defaultValue: "https://www.shoshinsha-design.com/wp-content/uploads/2020/05/noimage-580x440.png",
       },
       createdAt: {
         allowNull: false,

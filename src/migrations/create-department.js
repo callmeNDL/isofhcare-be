@@ -9,12 +9,12 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       MaKhoa: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.CHAR(10),
         allowNull: false,
         unique: true,
       },
       TenKhoa: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(50),
         allowNull: false,
         unique: true
       },

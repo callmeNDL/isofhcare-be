@@ -1,7 +1,7 @@
 import nodemailer from 'nodemailer';
 let getBodyHTMLEmail = (dataSend) => {
   let result = '';
-  if (dataSend) {
+  if (dataSend.length !== 0) {
     result = `<h3>Xin chào ${dataSend.patientName}!</h3>
     <p>Bạn nhận được email này vì đã đặt lịch khám bệnh online trên Bookingcare</p>
     <p>Thông tin đặt lịch khám bệnh:</p>
@@ -16,6 +16,7 @@ let getBodyHTMLEmail = (dataSend) => {
     <div style="font-size:0.8em;text-align:center;color:#999999"> Isofhcare, 180 Đ. Cao Lỗ, Phường 4, Quận 8, Thành phố Hồ Chí Minh </div>
   `;
   }
+
   return result;
 };
 const senMailServices = {

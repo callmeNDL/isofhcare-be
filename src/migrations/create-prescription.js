@@ -15,7 +15,7 @@ module.exports = {
         unique: true,
       },
       MaBS: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.CHAR(10),
         allowNull: false,
         references: {
           model: "Doctors",
@@ -23,7 +23,7 @@ module.exports = {
         }
       },
       MaUser: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.CHAR(10),
         allowNull: false,
         references: {
           model: "Users",
@@ -44,11 +44,10 @@ module.exports = {
       },
       TongTienThuoc: {
         type: Sequelize.INTEGER,
-        allowNull: false,
         defaultValue: 0
       },
       TrangThai: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(30),
         allowNull: false,
         defaultValue: "new"
       },

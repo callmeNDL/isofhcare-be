@@ -17,7 +17,7 @@ module.exports = {
         }
       },
       MaThuoc: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.CHAR(20),
         allowNull: false,
         references: {
           model: "Medicines",
@@ -38,7 +38,6 @@ module.exports = {
       },
       TongTienThuoc: {
         type: Sequelize.INTEGER,
-        allowNull: false,
       },
       createdAt: {
         allowNull: false,

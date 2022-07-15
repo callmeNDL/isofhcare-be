@@ -6,19 +6,18 @@ module.exports = (sequelize, DataTypes) => {
   class Doctor extends Model {
 
     static associate(models) {
-      Doctor.belongsTo(models.Department, { foreignKey: 'MaKhoa', as: 'departmentData' });
-      Doctor.hasMany(models.Booking, { foreignKey: 'MaBS', as: 'doctorData' });
+      // Doctor.belongsTo(models.Department, { foreignKey: 'MaKhoa', as: 'departmentData' });
     }
   }
   Doctor.init({
-    MaBS: DataTypes.INTEGER,
-    MaKhoa: DataTypes.INTEGER,
+    MaBS: DataTypes.STRING,
+    MaKhoa: DataTypes.STRING,
     HoTen: DataTypes.STRING,
     CMND: DataTypes.INTEGER,
     NgaySinh: DataTypes.DATE,
-    DiaChi: DataTypes.STRING,
     GioiTinh: DataTypes.BOOLEAN,
-    SDT: DataTypes.INTEGER,
+    SDT: DataTypes.STRING,
+    DiaChi: DataTypes.STRING,
     ChuyenNganh: DataTypes.STRING,
     username: DataTypes.STRING,
     email: DataTypes.STRING,

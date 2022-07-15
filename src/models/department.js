@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Department.init({
-    MaKhoa: DataTypes.INTEGER,
+    MaKhoa: DataTypes.STRING,
     TenKhoa: DataTypes.STRING,
     MoTa: DataTypes.STRING
   }, {

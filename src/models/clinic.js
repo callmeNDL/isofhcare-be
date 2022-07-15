@@ -10,8 +10,8 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Clinic.init({
-    MaPhong: DataTypes.INTEGER,
-    MaKhoa: DataTypes.INTEGER,
+    MaPhong: DataTypes.STRING,
+    MaKhoa: DataTypes.STRING,
     TenPhongKham: DataTypes.STRING,
     ChucNang: DataTypes.STRING
   }, {
