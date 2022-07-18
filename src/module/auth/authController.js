@@ -4,14 +4,14 @@ const authController = {
   handleLoginUser: async (req, res) => {
     let username = req.body.username;
     let password = req.body.password;
+    let role = req.body.ChucVu;
     if (!username || !password) {
       return res.status(500).json({
         errCode: 1,
-        message: "Please enter username and password !",
+        message: "Nhập thông tin đăng nhập !",
       })
     }
-    let userData = await authServices.loginUser(username, password);
-
+    let userData = await authServices.loginUser(username, password, role);
     res.cookie("refreshToken", userData.refreshToken, {
       httpOnly: true,
       secure: false,

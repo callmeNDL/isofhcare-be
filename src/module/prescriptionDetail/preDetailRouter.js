@@ -6,5 +6,6 @@ router.get('/', preDetailController.handleGetAllPreDetails);
 router.post('/create-prescriptionDetail', preDetailController.handleCreateNewPreDetails);
 router.delete('/delete-prescriptionDetail', preDetailController.handleDeletePreDetails);
 router.put('/update-prescriptionDetail', preDetailController.handleUpdatePreDetails);
+router.get('/getDetail', preDetailController.handleGetPreDetails);
 
 module.exports = router;

@@ -30,6 +30,14 @@ module.exports = {
           key: 'MaUser'
         }
       },
+      MaPK: {
+        type: Sequelize.CHAR(10),
+        allowNull: false,
+        references: {
+          model: "MedicalExaminations",
+          key: 'MaPk'
+        }
+      },
       TinhTrang: {
         type: Sequelize.STRING,
         allowNull: false,

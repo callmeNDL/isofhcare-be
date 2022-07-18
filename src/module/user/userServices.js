@@ -1,17 +1,6 @@
 import db from '../../models/index';
 import bcrypt from 'bcrypt';
 
-let hashUserPassword = (password) => {
-  return new Promise(async (resolve, reject) => {
-    try {
-      const salt = await bcrypt.genSalt(10);
-      let hashed = await bcrypt.hashSync(password, salt);
-      resolve(hashed);
-    } catch (e) {
-      reject(e);
-    }
-  });
-};
 
 let checkExist = (variable, filter) => {
   return new Promise(async (resolve, reject) => {
@@ -31,6 +20,7 @@ let checkExist = (variable, filter) => {
     }
   });
 };
+
 
 const userServices = {
   getAllUsers: async (userId) => {
@@ -150,7 +140,6 @@ const userServices = {
         } else {
           const salt = await bcrypt.genSalt(10);
           let hashPassword = await bcrypt.hashSync(data.password, salt);
-          console.log(data);
           await db.User.create({
             MaUser: data.MaUser,
             MaChucVu: data.MaChucVu,
@@ -222,7 +211,7 @@ const userServices = {
       try {
         if (!data.id) {
           resolve({
-            errCode: 2,
+            errCode: 1,
             errMessage: "Messing requited parameter"
           });
         }
@@ -231,21 +220,48 @@ const userServices = {
           raw: false,
         });
         if (user) {
-          user.MaChucVu = data.MaChucVu,
-            user.HoTen = data.HoTen,
-            user.NgaySinh = data.NgaySinh,
-            user.DiaChi = data.DiaChi,
-            user.GioiTinh = data.GioiTinh,
-            user.SDT = data.SDT,
-            user.CMND = data.CMND,
-            user.email = data.email,
-            user.HinhAnh = data.HinhAnh,
-            await user.save();
-          resolve({
-            errCode: 0,
-            errMessage: "update user success!"
-          })
+          if (data.CMND === user.CMND) {
+            user.MaChucVu = data.MaChucVu,
+              user.HoTen = data.HoTen,
+              user.NgaySinh = data.NgaySinh,
+              user.DiaChi = data.DiaChi,
+              user.GioiTinh = data.GioiTinh,
+              user.SDT = data.SDT,
+              user.CMND = data.CMND,
+              user.email = data.email,
+              user.HinhAnh = data.HinhAnh,
+              await user.save();
+            resolve({
+              errCode: 0,
+              errMessage: "Cập nhật thành congp!"
+            })
+          } else {
+            let checkCMND = await checkExist(data.CMND, "CMND");
+            if (checkCMND === true) {
+              console.log("tồn tại");
+              resolve({
+                errCode: 1,
+                errMessage: "CMND đã tồn tại.",
+              });
+            } else {
+              user.MaChucVu = data.MaChucVu,
+                user.HoTen = data.HoTen,
+                user.NgaySinh = data.NgaySinh,
+                user.DiaChi = data.DiaChi,
+                user.GioiTinh = data.GioiTinh,
+                user.SDT = data.SDT,
+                user.CMND = data.CMND,
+                user.email = data.email,
+                user.HinhAnh = data.HinhAnh,
+                await user.save();
+              resolve({
+                errCode: 0,
+                errMessage: "Cập nhật thành công"
+              })
+            }
+          }
         } else {
+
           resolve({
             errCode: 1,
             errMessage: "User not found!"

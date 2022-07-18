@@ -34,6 +34,22 @@ const bookingServices = {
             where: { id: bookingId },
           });
         }
+        if (!bookings) {
+          resolve({});
+        }
+        resolve(bookings);
+      } catch (e) {
+        reject(e);
+      }
+    });
+  },
+  getBookingWithMaBS: async (MaBS) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        let bookings = "";
+        bookings = await db.Booking.findAll({
+          where: { MaBS: MaBS },
+        });
         resolve(bookings);
       } catch (e) {
         reject(e);

@@ -16,6 +16,20 @@ const preDetailController = {
       preDetails,
     });
   },
+  handleGetPreDetails: async (req, res) => {
+    let MaDT = req.query.MaDT;
+    if (!MaDT) {
+      return res.status(200).json({
+        errCode: 1,
+        errMessage: "Nhập mã đơn thuốc",
+        preDetails: [],
+      });
+    }
+    let preDetails = await preDetailServices.getPresDetails(MaDT);
+    return res.status(200).json({
+      preDetails
+    });
+  },
   handleCreateNewPreDetails: async (req, res) => {
     let message = await preDetailServices.createNewPreDetail(req.body);
     return res.status(200).json(message);

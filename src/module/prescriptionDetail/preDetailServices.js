@@ -20,6 +20,26 @@ const preDetails = {
       }
     });
   },
+  getPresDetails: async (MaDT) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        let prescriptionDetails = [];
+        prescriptionDetails = await db.PreDetails.findAll({
+          where: { MaDT: MaDT }
+        });
+        resolve({
+          errCode: 0,
+          errMessage: `Danh sách chi tiết đơn thuốc ${MaDT}`,
+          prescriptionDetails
+        });
+      } catch (e) {
+        reject({
+          errCode: 1,
+          errMessage: "Lỗi server",
+        });
+      }
+    });
+  },
   createNewPreDetail: async (data) => {
     return new Promise(async (resolve, reject) => {
       try {
