@@ -23,7 +23,14 @@ const medicalExaminationServices = {
       try {
         let medicalExaminations = "";
         if (medicalExaminationID === "ALL") {
-          medicalExaminations = await db.MedicalExaminations.findAll();
+          medicalExaminations = await db.MedicalExaminations.findAll({
+            include: [{
+              model: db.MedicalTests,
+              // as: "MedicalTest"
+            }],
+            raw: true,
+            nest: true
+          });
         }
         if (medicalExaminationID && medicalExaminationID !== "ALL") {
           medicalExaminations = await db.MedicalExaminations.findOne({
@@ -45,27 +52,41 @@ const medicalExaminationServices = {
         if (checkMaPK) {
           resolve({
             errCode: 1,
-            errMessage: "MaPK is exist. Please try MaPK other",
+            errMessage: "Mã phiếu khám đã tồn tại",
           });
         }
         if (checkMaDL) {
           resolve({
             errCode: 1,
-            errMessage: "MaDL is exist. Please try MaDL other",
+            errMessage: "Dặt lịch đã có phiếu khám!",
           });
         }
         else {
+          let uid = Number((new Date().getTime()).toString().slice(-6));
+          if (uid <= 9999) {
+            uid + 10000
+          }
           await db.MedicalExaminations.create({
-            MaPK: data.MaPK,
+            MaPK: uid,
             MaDL: data.MaDL,
             CaKham: data.CaKham,
             NgayKham: data.NgayKham,
             KetQua: data.KetQua,
+            MaPhong: data.MaPhong,
+            TenPK: data.TenPK
+          }).then(() => {
+            resolve({
+              errCode: 0,
+              errMessage: "Thêm thành công",
+            });
+          }).catch((err) => {
+            console.log(err);
+            resolve({
+              errCode: 1,
+              errMessage: "Thêm thất bại",
+            });
           });
-          resolve({
-            errCode: 0,
-            message: "Thêm phiếu khám mới thành công",
-          });
+
         }
       } catch (e) {
         reject({
@@ -88,27 +109,26 @@ const medicalExaminationServices = {
             errMessage: "MedicalExamination is not exist"
           })
         } else {
-          let user = await db.User.findAll({
-            where: { MaChucVu: medicalExamination.MaChucVu },
-            raw: false
-          })
-          if (user.length != 0) {
+          const medicalTest = await db.MedicalTests.findAll({
+            where: { MaPK: medicalExamination.MaPK }
+          });
+          if (medicalTest.length !== 0) {
             resolve({
               errCode: 1,
-              errMessage: `MedicalExamination ${medicalExamination.TenChucVu} has an user`
+              errMessage: `Phiếu khám có ${medicalTest.length} phiếu xét nghiệm`
             })
           } else {
             await medicalExamination.destroy();
             resolve({
               errCode: 0,
-              errMessage: "The medicalExamination is delete"
+              errMessage: "Xoá thành công"
             })
           }
         }
       } catch (e) {
         reject({
           errCode: 1,
-          errMessage: "department is not delete"
+          errMessage: "Lỗi hệ thống"
         })
       }
     })
@@ -131,6 +151,7 @@ const medicalExaminationServices = {
           medicalExamination.CaKham = data.CaKham,
             medicalExamination.KetQua = data.KetQua,
             medicalExamination.NgayKham = data.NgayKham,
+            medicalExamination.TenPK = data.TenPK,
             await medicalExamination.save();
           resolve({
             errCode: 0,

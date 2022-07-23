@@ -6,7 +6,7 @@ module.exports = (sequelize, DataTypes) => {
   class Prescription extends Model {
 
     static associate(models) {
-      // Prescription.hasMany(models.User, { foreignKey: 'MaChucVu', as: 'roleData' });
+      Prescription.belongsTo(models.User, { foreignKey: 'MaUser', targetKey: 'MaUser' });
     }
   }
   Prescription.init({

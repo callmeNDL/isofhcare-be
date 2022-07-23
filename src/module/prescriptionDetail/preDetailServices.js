@@ -25,7 +25,10 @@ const preDetails = {
       try {
         let prescriptionDetails = [];
         prescriptionDetails = await db.PreDetails.findAll({
-          where: { MaDT: MaDT }
+          where: { MaDT: MaDT },
+          include: { model: db.Medicine },
+          raw: true,
+          nest: true
         });
         resolve({
           errCode: 0,
@@ -54,7 +57,7 @@ const preDetails = {
             where: { MaThuoc: data.MaThuoc },
             raw: false
           })
-          let tienthuoc = medicine.GiaBan * data.LieuLuong * data.SoLuong * data.SoNgayUong;
+          let tienthuoc = medicine.GiaBan / medicine.SoLuong * data.SoLuong;
           await db.PreDetails.create({
             MaDT: data.MaDT,
             MaThuoc: data.MaThuoc,

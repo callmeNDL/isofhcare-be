@@ -21,7 +21,7 @@ const authServices = {
       { expiresIn: "100d" }
     );
   },
-  loginUser: async (username, password, role) => {
+  loginAdmin: async (username, password, role) => {
     return new Promise(async (resolve, reject) => {
       try {
         if (role === "AD") {
@@ -75,6 +75,45 @@ const authServices = {
               });
             }
 
+          }
+        }
+      } catch (e) {
+        reject(e);
+      }
+    });
+  },
+  loginUser: async (username, password, role) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const user = await db.User.findOne({
+          where: { username: username }
+        })
+        if (!user) {
+          resolve({
+            errCode: 1,
+            errMessage: "Tên đăng nhập không tồn tại",
+          });
+        } else {
+          const validPassword = await bcrypt.compare(password, user.password);
+          if (!validPassword) {
+            resolve({
+              errCode: 1,
+              errMessage: "Sai mật khẩu!",
+            });
+          } else {
+            var accessToken = authServices.generateAccessToken(user);
+            const userResult = await db.User.findOne({
+              where: { id: user.id },
+              attributes: {
+                exclude: ["password"],
+              },
+            })
+            resolve({
+              errCode: 0,
+              errMessage: "Thông tin user",
+              user: user, accessToken
+
+            });
           }
         }
       } catch (e) {

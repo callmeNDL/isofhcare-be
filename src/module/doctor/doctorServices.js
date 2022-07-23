@@ -173,21 +173,45 @@ const doctorServices = {
           raw: false,
         });
         if (doctor) {
-          doctor.MaKhoa = data.MaKhoa,
-            doctor.CMND = data.CMND,
-            doctor.HoTen = data.HoTen,
-            doctor.NgaySinh = data.NgaySinh,
-            doctor.DiaChi = data.DiaChi,
-            doctor.GioiTinh = data.GioiTinh,
-            doctor.SDT = data.SDT,
-            doctor.ChuyenNganh = data.ChuyenNganh,
-            doctor.email = data.email,
-            doctor.HinhAnh = data.HinhAnh,
-            await doctor.save();
-          resolve({
-            errCode: 0,
-            errMessage: "update doctor success!"
-          })
+          if (data.CMND === doctor.CMND) {
+            doctor.MaKhoa = data.MaKhoa,
+              doctor.CMND = data.CMND,
+              doctor.HoTen = data.HoTen,
+              doctor.NgaySinh = data.NgaySinh,
+              doctor.DiaChi = data.DiaChi,
+              doctor.GioiTinh = data.GioiTinh,
+              doctor.ChuyenNganh = data.ChuyenNganh,
+              doctor.HinhAnh = data.HinhAnh,
+              await doctor.save();
+            resolve({
+              errCode: 0,
+              errMessage: "update doctor success!"
+            })
+          } else {
+            let checkCMND = await checkExist(data.CMND, "CMND");
+            if (checkCMND === true) {
+              console.log("tồn tại");
+              resolve({
+                errCode: 1,
+                errMessage: "CMND đã tồn tại.",
+              });
+            } else {
+              doctor.MaKhoa = data.MaKhoa,
+                doctor.CMND = data.CMND,
+                doctor.HoTen = data.HoTen,
+                doctor.NgaySinh = data.NgaySinh,
+                doctor.DiaChi = data.DiaChi,
+                doctor.GioiTinh = data.GioiTinh,
+                doctor.ChuyenNganh = data.ChuyenNganh,
+                doctor.HinhAnh = data.HinhAnh,
+                await doctor.save();
+              resolve({
+                errCode: 0,
+                errMessage: "Cập nhật thành công"
+              })
+            }
+          }
+
         } else {
           resolve({
             errCode: 1,
@@ -218,14 +242,14 @@ const doctorServices = {
             where: { MaBS: doctor.MaBS },
             raw: false
           })
-          // let schedule = await db.Schedule.findAll({
-          //   where: { MaBS: doctor.MaBS },
-          //   raw: false
-          // })
-          // let medicalTests = await db.MedicalTests.findAll({
-          //   where: { MaBS: doctor.MaBS },
-          //   raw: false
-          // })
+          let schedule = await db.Schedule.findAll({
+            where: { MaBS: doctor.MaBS },
+            raw: false
+          })
+          let medicalTests = await db.MedicalTests.findAll({
+            where: { MaBS: doctor.MaBS },
+            raw: false
+          })
           if (booking.length !== 0) {
             resolve({
               errCode: 1,

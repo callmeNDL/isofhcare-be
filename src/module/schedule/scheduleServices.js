@@ -55,41 +55,40 @@ const scheduleServices = {
   createNewSchedule: (data) => {
     return new Promise(async (resolve, reject) => {
       try {
-        // let isSchedule = await db.Schedule.findOne({
-        //   where: {
-        //     MaBS: data.MaBS,
-        //     MaPhong: data.MaPhong,
-        //     CaKham: data.CaKham,
-        //     NgayKham: data.NgayKham
-        //   },
-        // });
-        // if (isSchedule) {
-        //   resolve({
-        //     errCode: 1,
-        //     errMessage: "Schedule is exist. Please try Schedule other",
-        //   });
-        // } 
-        await db.Schedule.create({
-          MaBS: data.MaBS,
-          MaPhong: data.MaPhong,
-          CaKham: data.CaKham,
-          NgayKham: data.NgayKham
-        }).then(() => {
-          resolve({
-            errCode: 0,
-            message: "Create complete",
-          });
-        }).catch((err) => {
-          resolve({
-            errCode: 0,
-            message: "Create failure",
-          });
+        let isSchedule = await db.Schedule.findOne({
+          where: {
+            MaBS: data.MaBS,
+            CaKham: data.CaKham,
+            NgayKham: data.NgayKham
+          },
         });
-
+        if (isSchedule) {
+          resolve({
+            errCode: 1,
+            errMessage: "Lịch làm việc đã tồn tại",
+          });
+        } else {
+          await db.Schedule.create({
+            MaBS: data.MaBS,
+            MaPhong: data.MaPhong,
+            CaKham: data.CaKham,
+            NgayKham: data.NgayKham
+          }).then(() => {
+            resolve({
+              errCode: 0,
+              errMessage: "Thêm thành công",
+            });
+          }).catch((err) => {
+            resolve({
+              errCode: 1,
+              errMessage: "Thêm thất bại",
+            });
+          });
+        }
       } catch (e) {
         reject({
           errCode: 1,
-          message: "Ma Chuc Vu đã tồn tại",
+          errMessage: "Thêm thất bại",
         });
       }
     });
@@ -110,7 +109,7 @@ const scheduleServices = {
           await schedule.destroy();
           resolve({
             errCode: 0,
-            errMessage: "The schedule is delete"
+            errMessage: "Xoá thành công"
           })
         }
       } catch (e) {

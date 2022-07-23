@@ -30,6 +30,18 @@ module.exports = {
           key: 'CaKham'
         }
       },
+      MaPhong: {
+        type: Sequelize.CHAR(10),
+        allowNull: false,
+        references: {
+          model: "Clinics",
+          key: 'MaPhong'
+        }
+      },
+      TenPK: {
+        type: Sequelize.STRING(20),
+        allowNull: false,
+      },
       NgayKham: {
         type: Sequelize.DATE,
         allowNull: false,

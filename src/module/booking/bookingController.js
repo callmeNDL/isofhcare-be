@@ -36,6 +36,10 @@ const bookingController = {
     let message = await bookingServices.createNewBooking(req.body);
     return res.status(200).json(message);
   },
+  handleCreateNewBookingUser: async (req, res) => {
+    let message = await bookingServices.createNewBookingUser(req.body);
+    return res.status(200).json(message);
+  },
   handleDeleteBooking: async (req, res) => {
     if (!req.body.id) {
       return res.status(200).json({

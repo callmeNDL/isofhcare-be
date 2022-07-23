@@ -25,34 +25,18 @@ const scheduleController = {
       });
     }
   },
-  handleGetScheduleByMaBS: async (req, res) => {
-    let MaBS = req.query.id;
-    if (!MaBS) {
-      return res.status(200).json({
-        errCode: 1,
-        errMessage: "Failed",
-        schedules: [],
-      });
-    }
-    let schedules = await scheduleServices.getAllScheduleByMaBS(MaBS);
-    return res.status(200).json({
-      errCode: 0,
-      errMessage: "OK",
-      schedules,
-    });
-  },
   handleCreateNewSchedule: async (req, res) => {
     let message = await scheduleServices.createNewSchedule(req.body);
     return res.status(200).json(message);
   },
   handleDeleteSchedule: async (req, res) => {
-    if (!req.body.id) {
+    if (!req.query.id) {
       return res.status(200).json({
         errCode: 1,
         errMessage: 'Thiếu các thông số bắt buộc!',
       })
     } else {
-      let message = await scheduleServices.deleteSchedule(req.body.id);
+      let message = await scheduleServices.deleteSchedule(req.query.id);
       if (message.errCode == 1) {
         return res.status(200).json({
           errCode: 1,

@@ -6,6 +6,7 @@ module.exports = (sequelize, DataTypes) => {
   class MedicalExaminations extends Model {
 
     static associate(models) {
+      MedicalExaminations.hasMany(models.MedicalTests, { foreignKey: 'MaPK', targetKey: 'MaPK' });
     }
   }
   MedicalExaminations.init({
@@ -14,6 +15,8 @@ module.exports = (sequelize, DataTypes) => {
     CaKham: DataTypes.STRING,
     NgayKham: DataTypes.DATE,
     KetQua: DataTypes.STRING,
+    MaPhong: DataTypes.STRING,
+    TenPK: DataTypes.STRING,
   }, {
     sequelize,
     modelName: 'MedicalExaminations',

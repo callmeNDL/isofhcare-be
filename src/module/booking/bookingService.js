@@ -90,6 +90,67 @@ const bookingServices = {
   createNewBooking: async (dataCreateBooking) => {
     return new Promise(async (resolve, reject) => {
       try {
+        let uid = Number((new Date().getTime()).toString().slice(-6));
+        if (uid <= 9999) {
+          uid + 10000
+        }
+
+        let data = dataCreateBooking;
+        // check email exist
+        let checkMaDL = await checkExist(uid, "MaDL", "Booking");
+        let checkUser = await checkExist(data.MaUser, "MaUser", "User");
+        let checkDoctor = await checkExist(data.MaBS, "MaBs", "Doctor");
+        if (checkMaDL === true) {
+          resolve({
+            errCode: 1,
+            errMessage: "Mã đặt lịch tồn tại!",
+          });
+        }
+        if (checkUser === false) {
+          resolve({
+            errCode: 1,
+            errMessage: "Bệnh nhân không tồn tại.",
+          });
+        }
+        if (checkDoctor === false) {
+          resolve({
+            errCode: 1,
+            errMessage: "Bác sĩ không tồn tại.",
+          });
+        } else {
+          let token = uuidv4();
+          // let email = dataCreateBooking.datasenMail.email;
+          // let dataSendMail = dataCreateBooking.datasenMail.dataSend;
+          // if (dataSendMail.redirectLink.length === 0) {
+          //   dataSendMail.redirectLink = `${process.env.BASE_URL_REACT}/verify-booking/${token}&${data.MaDL}`
+          // }
+          // await senMailController.handleSenMail(email, dataSendMail)
+          await db.Booking.create({
+            MaDL: uid,
+            MaUser: data.MaUser,
+            MaBS: data.MaBS,
+            ThoiGian: data.ThoiGian,
+            NgayDL: data.NgayDL,
+            TinhTrangBN: data.TinhTrangBN,
+            TrangThai: data.TrangThai,
+            token: token
+          });
+          resolve({
+            errCode: 0,
+            message: "Đặt lịch gửi mail thành công",
+          });
+        }
+      } catch (e) {
+        resolve({
+          errCode: 0,
+          message: "Đặt lịch gửi mail thất bại",
+        });
+      }
+    });
+  },
+  createNewBookingUser: async (dataCreateBooking) => {
+    return new Promise(async (resolve, reject) => {
+      try {
         let data = dataCreateBooking.dataBooking;
         // check email exist
         let checkMaDL = await checkExist(data.MaDL, "MaDL", "Booking");
@@ -228,7 +289,7 @@ const bookingServices = {
             raw: false
           })
           if (booking) {
-            booking.TrangThai = "confirm";
+            booking.TrangThai = "confirmed";
             await booking.save()
             resolve({
               errCode: 0,

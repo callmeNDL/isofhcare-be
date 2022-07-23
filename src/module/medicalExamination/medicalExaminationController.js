@@ -28,14 +28,7 @@ const medicalExaminationController = {
       })
     } else {
       let message = await medicalExaminationServices.deleteMedicalExamination(req.body.id);
-      if (message.errCode == 1) {
-        return res.status(200).json({
-          errCode: 1,
-          errMessage: message.errMessage
-        });
-      } else {
-        return res.status(200).json(message);
-      }
+      return res.status(200).json(message);
     }
   },
   handleUpdateMedicalExamination: async (req, res) => {

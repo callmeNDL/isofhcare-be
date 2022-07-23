@@ -25,11 +25,18 @@ const prescriptionServices = {
       try {
         let prescriptions = "";
         if (id === "ALL") {
-          prescriptions = await db.Prescription.findAll();
+          prescriptions = await db.Prescription.findAll({
+            include: { model: db.User },
+            raw: true,
+            nest: true
+          });
         }
         if (id && id !== "ALL") {
           prescriptions = await db.Prescription.findOne({
             where: { id: id },
+            include: { model: db.User },
+            raw: true,
+            nest: true
           });
         }
         resolve(prescriptions);

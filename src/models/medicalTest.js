@@ -6,6 +6,7 @@ module.exports = (sequelize, DataTypes) => {
   class MedicalTests extends Model {
 
     static associate(models) {
+      MedicalTests.belongsTo(models.MedicalExaminations, { foreignKey: 'MaPK', targetKey: 'MaPK' });
     }
   }
   MedicalTests.init({

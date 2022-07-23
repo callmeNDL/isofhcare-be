@@ -23,7 +23,14 @@ const medicalTestServices = {
       try {
         let medicalTests = "";
         if (medicalTestID === "ALL") {
-          medicalTests = await db.MedicalTests.findAll();
+          medicalTests = await db.MedicalTests.findAll({
+            include: [{
+              model: db.MedicalExaminations,
+              // as: "MedicalTest"
+            }],
+            raw: true,
+            nest: true
+          });
         }
         if (medicalTestID && medicalTestID !== "ALL") {
           medicalTests = await db.MedicalTests.findOne({
