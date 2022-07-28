@@ -32,6 +32,22 @@ const bookingController = {
       bookings,
     });
   },
+  handleGeBookingsWithMaDL: async (req, res) => {
+    let MaDL = req.query.MaDL;
+    if (!MaDL) {
+      return res.status(200).json({
+        errCode: 1,
+        errMessage: "Nhập MaDL bác sĩ",
+        bookings: [],
+      });
+    }
+    let bookings = await bookingServices.getBookingWithMaDL(MaDL);
+    return res.status(200).json({
+      errCode: 0,
+      errMessage: `đặt lịch ${MaDL}`,
+      bookings,
+    });
+  },
   handleCreateNewBooking: async (req, res) => {
     let message = await bookingServices.createNewBooking(req.body);
     return res.status(200).json(message);
@@ -51,7 +67,7 @@ const bookingController = {
       if (message.errCode === 1) {
         return res.status(200).json({
           errCode: 1,
-          errMessage: `Booking ${req.body.id} is not delete`
+          errMessage: message.errMessage
         });
       } else {
         return res.status(200).json(message);
@@ -60,6 +76,10 @@ const bookingController = {
   },
   handleUpdateBooking: async (req, res) => {
     let message = await bookingServices.updateBooking(req.body);
+    return res.status(200).json(message)
+  },
+  handleCancelBooking: async (req, res) => {
+    let message = await bookingServices.cancelBooking(req.body);
     return res.status(200).json(message)
   },
   handleGetByUser: async (req, res) => {

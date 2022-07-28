@@ -29,6 +29,10 @@ module.exports = {
           key: 'MaUser'
         }
       },
+      CaKham: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
       ThoiGian: {
         type: Sequelize.TIME,
         allowNull: false,

@@ -8,7 +8,6 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-
       MaPK: {
         allowNull: false,
         type: Sequelize.CHAR(10),
@@ -37,6 +36,10 @@ module.exports = {
           model: "Clinics",
           key: 'MaPhong'
         }
+      },
+      ThoiGianKham: {
+        type: Sequelize.TIME,
+        allowNull: false,
       },
       TenPK: {
         type: Sequelize.STRING(20),

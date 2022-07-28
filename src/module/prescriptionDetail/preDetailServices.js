@@ -46,6 +46,7 @@ const preDetails = {
   createNewPreDetail: async (data) => {
     return new Promise(async (resolve, reject) => {
       try {
+        let create = false;
         if (data.length === 0) {
           resolve({
             errCode: 1,
@@ -65,11 +66,32 @@ const preDetails = {
             SoLuong: data.SoLuong,
             SoNgayUong: data.SoNgayUong,
             TongTienThuoc: tienthuoc,
+          }).then(() => {
+            create = true;
+          }).catch((err) => {
+            console.log(err);
+            resolve({
+              errCode: 1,
+              errMessage: "Thêm thất bại",
+            });
           });
-          resolve({
-            errCode: 0,
-            message: "prescriptionDetail create success",
-          });
+          if (create) {
+            let prescription = await db.Prescription.findOne({
+              where: { MaDT: data.MaDT }
+            })
+            prescription.TongTienThuoc = prescription.TongTienThuoc + tienthuoc
+            await prescription.save().then(() => {
+              resolve({
+                errCode: 0,
+                errMessage: "Thêm thành công",
+              });
+            }).catch((err) => {
+              resolve({
+                errCode: 1,
+                errMessage: "Thêm thất bại",
+              });
+            });;
+          }
         }
       } catch (e) {
         reject(e);
@@ -79,6 +101,7 @@ const preDetails = {
   DeletePreDetail: async (id) => {
     return new Promise(async (resolve, reject) => {
       //check id
+      let create = false;
       try {
         let prescriptionDetail = await db.PreDetails.findOne({
           where: { id: id },
@@ -90,22 +113,45 @@ const preDetails = {
             errMessage: "prescriptionDetail is not exist"
           })
         } else {
-          await prescriptionDetail.destroy();
-          resolve({
-            errCode: 0,
-            errMessage: "The prescriptionDetail is delete"
-          })
+          await prescriptionDetail.destroy().then(() => {
+            create = true;
+          }).catch((err) => {
+            console.log(err);
+            resolve({
+              errCode: 1,
+              errMessage: "Xoá thất bại",
+            });
+          });
+          if (create) {
+            let prescription = await db.Prescription.findOne({
+              where: { MaDT: prescriptionDetail.MaDT }
+            })
+            prescription.TongTienThuoc = prescription.TongTienThuoc - prescriptionDetail.TongTienThuoc
+            await prescription.save().then(() => {
+              resolve({
+                errCode: 0,
+                errMessage: "Xoá thành công"
+              })
+            }).catch((err) => {
+              resolve({
+                errCode: 1,
+                errMessage: "Xoá thất bại",
+              });
+            });;
+          };
+
         }
       } catch (e) {
         reject({
           errCode: 1,
-          errMessage: "prescription is not delete aa"
+          errMessage: "Xoá thất bại",
         })
       }
     })
   },
   updatePreDetail: async (data) => {
     return new Promise(async (resolve, reject) => {
+      let create = false;
       try {
         if (!data.id) {
           resolve({
@@ -122,14 +168,40 @@ const preDetails = {
             where: { MaThuoc: data.MaThuoc },
             raw: false
           })
-          let tienthuoc = medicine.GiaBan * data.LieuLuong * data.SoLuong * data.SoNgayUong;
-          // prescriptionDetail.MaDT = data.MaDT,
-          // prescriptionDetail.MaThuoc = data.MaThuoc,
-          prescriptionDetail.LieuLuong = data.LieuLuong,
+          let tienthuoc = medicine.GiaBan / medicine.SoLuong * data.SoLuong;
+
+          prescriptionDetail.MaDT = data.MaDT,
+            prescriptionDetail.MaThuoc = data.MaThuoc,
+            prescriptionDetail.LieuLuong = data.LieuLuong,
             prescriptionDetail.SoLuong = data.SoLuong,
             prescriptionDetail.SoNgayUong = data.SoNgayUong,
             prescriptionDetail.TongTienThuoc = tienthuoc,
-            await prescriptionDetail.save();
+            await prescriptionDetail.save().then(() => {
+              create = true;
+            }).catch((err) => {
+              console.log(err);
+              resolve({
+                errCode: 1,
+                errMessage: "Cập nhật thất bại",
+              });
+            });
+          if (create) {
+            let prescription = await db.Prescription.findOne({
+              where: { MaDT: data.MaDT }
+            })
+            prescription.TongTienThuoc = prescription.TongTienThuoc - data.TongTienThuoc + tienthuoc
+            await prescription.save().then(() => {
+              resolve({
+                errCode: 0,
+                errMessage: "Cập nhật thành công",
+              });
+            }).catch((err) => {
+              resolve({
+                errCode: 1,
+                errMessage: "Cập nhật thất bại",
+              });
+            });;
+          };
           resolve({
             errCode: 0,
             errMessage: "Update prescriptionDetail success!"

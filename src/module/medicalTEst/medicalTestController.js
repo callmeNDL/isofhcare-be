@@ -16,6 +16,7 @@ const medicalTestController = {
       medicalTests,
     });
   },
+
   handleCreateNewMedicalTest: async (req, res) => {
     let message = await medicalTestServices.createNewMedicalTest(req.body);
     return res.status(200).json(message);

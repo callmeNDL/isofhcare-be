@@ -7,6 +7,8 @@ module.exports = (sequelize, DataTypes) => {
 
     static associate(models) {
       MedicalTests.belongsTo(models.MedicalExaminations, { foreignKey: 'MaPK', targetKey: 'MaPK' });
+      MedicalTests.belongsTo(models.Doctor, { foreignKey: 'MaBS', targetKey: 'MaBS' });
+
     }
   }
   MedicalTests.init({

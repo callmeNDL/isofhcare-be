@@ -24,10 +24,10 @@ const medicalTestServices = {
         let medicalTests = "";
         if (medicalTestID === "ALL") {
           medicalTests = await db.MedicalTests.findAll({
-            include: [{
-              model: db.MedicalExaminations,
-              // as: "MedicalTest"
-            }],
+            include: [
+              { model: db.Doctor, attributes: { exclude: ["password"], }, },
+              { model: db.MedicalExaminations, }
+            ],
             raw: true,
             nest: true
           });
@@ -35,9 +35,42 @@ const medicalTestServices = {
         if (medicalTestID && medicalTestID !== "ALL") {
           medicalTests = await db.MedicalTests.findOne({
             where: { id: medicalTestID },
+            include: [
+              { model: db.Doctor, attributes: { exclude: ["password"], }, },
+              { model: db.MedicalExaminations, }
+            ],
+            raw: true,
+            nest: true
           });
         }
         resolve(medicalTests);
+      } catch (e) {
+        reject(e);
+      }
+    });
+  },
+  getAllMedicalTestWithMaDL: async (MaDL) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        if (MaDL) {
+          let medicalTests = await db.MedicalTests.findOne({
+            where: { MaDL: MaDL },
+            include: [
+              { model: db.Doctor, attributes: { exclude: ["password"], }, },
+              { model: db.MedicalExaminations, },
+            ],
+            raw: true,
+            nest: true
+          });
+          if (medicalTests) {
+            resolve(medicalTests);
+          } else {
+            reject({
+              errCode: 1,
+              message: "Không có phiếu khám",
+            });
+          }
+        }
       } catch (e) {
         reject(e);
       }
@@ -77,19 +110,27 @@ const medicalTestServices = {
         if (!medicalTest) {
           resolve({
             errCode: 1,
-            errMessage: "MedicalTest is not exist"
+            errMessage: "Phiếu XN tồn tại tồn tại"
           })
         } else {
-          await medicalTest.destroy();
-          resolve({
-            errCode: 0,
-            errMessage: "The medicalTest is delete"
-          })
+          if (medicalTest.TrangThai === 'failure') {
+            await medicalTest.destroy();
+            resolve({
+              errCode: 0,
+              errMessage: "Xoá thành công"
+            })
+          } else {
+            resolve({
+              errCode: 1,
+              errMessage: `Đổi trạng thái ${medicalTest.TrangThai} sang failure để xoá`
+            })
+          }
+
         }
       } catch (e) {
         reject({
           errCode: 1,
-          errMessage: "department is not delete"
+          errMessage: "Lỗi hệ thống"
         })
       }
     })

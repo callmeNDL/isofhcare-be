@@ -25,6 +25,23 @@ const scheduleController = {
       });
     }
   },
+  handleGetAllSchedulesWithDate: async (req, res) => {
+    let NgayKham = req.query.NgayKham;
+    let MaBS = req.query.MaBS;
+    if (MaBS && NgayKham) {
+      let schedules = await scheduleServices.getAllScheduleBS(MaBS, NgayKham);
+      return res.status(200).json({
+        errCode: 0,
+        errMessage: "OK",
+        schedules,
+      });
+    }
+    return res.status(200).json({
+      errCode: 1,
+      errMessage: "Nhạp Ngày và mã bác sĩ",
+      schedules: [],
+    });
+  },
   handleCreateNewSchedule: async (req, res) => {
     let message = await scheduleServices.createNewSchedule(req.body);
     return res.status(200).json(message);

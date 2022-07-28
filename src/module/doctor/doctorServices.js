@@ -146,10 +146,21 @@ const doctorServices = {
             email: data.email,
             HinhAnh: data.HinhAnh,
             password: hashPassword
+          }).then(() => {
+            resolve({
+              errCode: 0,
+              errMessage: "Thêm thành công",
+            });
+          }).catch((err) => {
+            console.log(err);
+            resolve({
+              errCode: 1,
+              errMessage: "Thêm thất bại",
+            });
           });
 
           resolve({
-            errCode: 0,
+            errCode: 1,
             message: "OK",
           });
         }
@@ -257,11 +268,19 @@ const doctorServices = {
             })
           }
           else {
-            await doctor.destroy();
-            resolve({
-              errCode: 0,
-              errMessage: "The doctor is delete"
-            })
+            await doctor.destroy().then(() => {
+              resolve({
+                errCode: 0,
+                errMessage: "Xoá thành công",
+              });
+            }).catch((err) => {
+              console.log(err);
+              resolve({
+                errCode: 1,
+                errMessage: "Bác sĩ có lịch xét nghiệm",
+              });
+            });
+
           }
         }
       } catch (e) {

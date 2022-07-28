@@ -61,6 +61,12 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
+      authenticity: {
+        type: Sequelize.INTEGER,
+        allowNull: true,
+        defaultValue: 0,
+      },
+
       HinhAnh: {
         type: Sequelize.STRING,
         defaultValue: "https://www.shoshinsha-design.com/wp-content/uploads/2020/05/noimage-580x440.png",

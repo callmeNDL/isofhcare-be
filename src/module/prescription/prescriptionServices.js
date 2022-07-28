@@ -59,6 +59,7 @@ const prescriptionServices = {
         else {
           await db.Prescription.create({
             MaDT: data.MaDT,
+            MaPK: data.MaPK,
             MaBS: data.MaBS,
             MaUser: data.MaUser,
             TinhTrang: data.TinhTrang,

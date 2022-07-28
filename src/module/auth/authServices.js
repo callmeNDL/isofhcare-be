@@ -26,7 +26,7 @@ const authServices = {
       try {
         if (role === "AD") {
           var user = await db.User.findOne({
-            where: { username: username, MaChucVu: role },
+            where: { username: username },
           })
         } else if (role === "BS") {
           var user = await db.Doctor.findOne({

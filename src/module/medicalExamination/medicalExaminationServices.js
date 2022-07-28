@@ -24,10 +24,11 @@ const medicalExaminationServices = {
         let medicalExaminations = "";
         if (medicalExaminationID === "ALL") {
           medicalExaminations = await db.MedicalExaminations.findAll({
-            include: [{
-              model: db.MedicalTests,
-              // as: "MedicalTest"
-            }],
+            include: [
+              { model: db.MedicalTests },
+              { model: db.Booking },
+            ],
+
             raw: true,
             nest: true
           });
@@ -35,10 +36,37 @@ const medicalExaminationServices = {
         if (medicalExaminationID && medicalExaminationID !== "ALL") {
           medicalExaminations = await db.MedicalExaminations.findOne({
             where: { id: medicalExaminationID },
-
+            include: [
+              { model: db.MedicalTests },
+              { model: db.Booking },
+            ],
           });
         }
         resolve(medicalExaminations);
+      } catch (e) {
+        reject(e);
+      }
+    });
+  },
+  getAllMedicalExaminationtWithMaDL: async (MaDL) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        if (MaDL) {
+          let medicalExaminations = await db.MedicalExaminations.findOne({
+            where: { MaDL: MaDL },
+            include: [
+              { model: db.Timetables, },
+            ],
+          });
+          if (medicalExaminations) {
+            resolve(medicalExaminations);
+          } else {
+            reject({
+              errCode: 1,
+              message: "Không có phiếu khám",
+            });
+          }
+        }
       } catch (e) {
         reject(e);
       }
@@ -136,7 +164,6 @@ const medicalExaminationServices = {
   updateMedicalExamination: async (data) => {
     return new Promise(async (resolve, reject) => {
       try {
-
         if (!data.id) {
           resolve({
             errCode: 1,
@@ -151,6 +178,7 @@ const medicalExaminationServices = {
           medicalExamination.CaKham = data.CaKham,
             medicalExamination.KetQua = data.KetQua,
             medicalExamination.NgayKham = data.NgayKham,
+            medicalExamination.ThoiGianKham = data.ThoiGianKham,
             medicalExamination.TenPK = data.TenPK,
             await medicalExamination.save();
           resolve({

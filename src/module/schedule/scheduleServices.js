@@ -52,6 +52,21 @@ const scheduleServices = {
       }
     });
   },
+  getAllScheduleBS: async (MaBS, NgayKham) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        let schedules = "";
+        if (MaBS) {
+          schedules = await db.Schedule.findAll({
+            where: { MaBS: MaBS, NgayKham: NgayKham },
+          });
+        }
+        resolve(schedules);
+      } catch (e) {
+        reject(e);
+      }
+    });
+  },
   createNewSchedule: (data) => {
     return new Promise(async (resolve, reject) => {
       try {

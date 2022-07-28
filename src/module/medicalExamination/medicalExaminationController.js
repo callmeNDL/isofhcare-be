@@ -16,6 +16,22 @@ const medicalExaminationController = {
       medicalExaminations,
     });
   },
+  handleGetAllMedicalExaminationWithMaDL: async (req, res) => {
+    let id = req.query.MaDL;
+    if (!id) {
+      return res.status(200).json({
+        errCode: 1,
+        errMessage: "Failed",
+        medicalExaminations: [],
+      });
+    }
+    let medicalExaminations = await medicalExaminationServices.getAllMedicalExaminationtWithMaDL(id);
+    return res.status(200).json({
+      errCode: 0,
+      errMessage: "OK",
+      medicalExaminations,
+    });
+  },
   handleCreateNewMedicalExamination: async (req, res) => {
     let message = await medicalExaminationServices.createNewMedicalExamination(req.body);
     return res.status(200).json(message);

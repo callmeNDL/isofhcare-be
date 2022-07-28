@@ -6,6 +6,7 @@ module.exports = (sequelize, DataTypes) => {
   class Schedule extends Model {
 
     static associate(models) {
+      Schedule.belongsTo(models.Clinic, { foreignKey: 'MaPhong', targetKey: 'MaPhong', });
     }
   }
   Schedule.init({
