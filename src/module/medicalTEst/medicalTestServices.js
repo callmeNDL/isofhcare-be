@@ -85,13 +85,22 @@ const medicalTestServices = {
           TenPXN: data.TenPXN,
           KetQua: data.KetQua,
           NgayXN: data.NgayXN,
+          HinhAnhXN: "",
           TrangThai: data.TrangThai,
+        }).then(() => {
+          resolve({
+            errCode: 0,
+            message: "Thêm phiếu xét nghiệm mới thành công",
+          });
+          console.log(data);
+        }).catch((err) => {
+          console.log(err);
+          resolve({
+            errCode: 1,
+            errMessage: "Thêm thất bại",
+          });
         });
-        resolve({
-          errCode: 0,
-          message: "Thêm phiếu xét nghiệm mới thành công",
-        });
-        console.log(data);
+
       } catch (e) {
         reject({
           errCode: 1,
@@ -114,11 +123,19 @@ const medicalTestServices = {
           })
         } else {
           if (medicalTest.TrangThai === 'failure') {
-            await medicalTest.destroy();
-            resolve({
-              errCode: 0,
-              errMessage: "Xoá thành công"
-            })
+            await medicalTest.destroy().then(() => {
+              resolve({
+                errCode: 0,
+                errMessage: "Xoá thành công"
+              })
+            }).catch((err) => {
+              console.log(err);
+              resolve({
+                errCode: 1,
+                errMessage: "Xoá thất bại",
+              });
+            });;
+
           } else {
             resolve({
               errCode: 1,
@@ -155,6 +172,7 @@ const medicalTestServices = {
             medicalTest.TenPXN = data.TenPXN,
             medicalTest.KetQua = data.KetQua,
             medicalTest.NgayXN = data.NgayXN,
+            medicalTest.HinhAnhXN = data.HinhAnhXN,
             medicalTest.TrangThai = data.TrangThai,
             await medicalTest.save();
           resolve({

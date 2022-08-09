@@ -1,7 +1,6 @@
 import db from '../../models/index';
 import bcrypt from 'bcrypt';
 
-
 let checkExist = (variable, filter) => {
   return new Promise(async (resolve, reject) => {
     try {
@@ -99,6 +98,52 @@ const userServices = {
         }
       } catch (e) {
         reject(e);
+      }
+    });
+  },
+  changePassword: async (MaUser, passwordOld, passwordNew) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        // check email exist
+        let checkUser = await checkExist(MaUser, "MaUser");
+        if (checkUser === false) {
+          resolve({
+            errCode: 1,
+            errMessage: "User không tồn tại tồn tại.",
+          });
+        } else {
+          const user = await db.User.findOne({
+            where: { MaUser: MaUser },
+          }).catch((err) => {
+            console.log(err);
+            resolve({
+              errCode: 1,
+              errMessage: "thất bại",
+            });
+          });
+          const validPassword = await bcrypt.compare(passwordOld, user.password);
+          if (!validPassword) {
+            resolve({
+              errCode: 1,
+              errMessage: "Sai mật khẩu!",
+            });
+          }
+          const salt = await bcrypt.genSalt(10);
+          let hashPassword = await bcrypt.hashSync(passwordNew, salt);
+          if (user && validPassword) {
+            user.password = hashPassword,
+              await user.save();
+            resolve({
+              errCode: 0,
+              errMessage: "Cập nhật thành công!"
+            })
+          }
+        }
+      } catch (e) {
+        reject({
+          errCode: 0,
+          message: "Tại mới thất bại",
+        });
       }
     });
   },

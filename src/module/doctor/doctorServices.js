@@ -1,6 +1,6 @@
 import db from '../../models/index';
 import bcrypt from 'bcrypt';
-
+import sequelize from 'sequelize';
 let checkExist = (variable, filter) => {
   return new Promise(async (resolve, reject) => {
     try {
@@ -38,10 +38,57 @@ const doctorServices = {
             attributes: {
               exclude: ["password"],
             },
+          })
+        }
+        resolve(doctors);
+      } catch (e) {
+        reject(e);
+      }
+    });
+  },
+  Pagination: async (page) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const onePage = 8;
+        let doctors = {
+          data: {},
+          page: page,
+          limit: onePage,
+          totalRow: 0
+        };
+        if (page && page > 0) {
+          const result = await db.Doctor.findAll({
+            offset: ((page - 1) * onePage),
+            limit: onePage,
+          })
+          const allDoctor = await db.Doctor.findAll({});
+          doctors.data = result;
+          doctors.totalRow = allDoctor.length
+
+
+          resolve(doctors);
+        } else {
+          resolve({
+            errCode: 1,
+            errMessage: "Nhập trang lớn hơn 0",
           });
         }
-
-        resolve(doctors);
+      } catch (e) {
+        reject(e);
+      }
+    });
+  },
+  searchDoctor: async (textSearch) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        console.log(textSearch);
+        let doctors = "";
+        if (textSearch) {
+          doctors = await db.Doctor.findAll({
+            where: sequelize.literal(`MATCH (HoTen) AGAINST("${textSearch}")`)
+          })
+          resolve(doctors);
+        }
       } catch (e) {
         reject(e);
       }

@@ -92,7 +92,18 @@ const prescriptionServices = {
             errMessage: "prescription is not exist"
           })
         } else {
-          await prescription.destroy();
+          await prescription.destroy().then(() => {
+            resolve({
+              errCode: 0,
+              errMessage: "Xoá thành công"
+            })
+          }).catch((err) => {
+            console.log(err);
+            resolve({
+              errCode: 1,
+              errMessage: "Xoá thất bại vì đơn thuốc đã có thuốc",
+            });
+          });
           resolve({
             errCode: 0,
             errMessage: "The prescription is delete"

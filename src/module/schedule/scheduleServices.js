@@ -23,7 +23,11 @@ const scheduleServices = {
       try {
         let schedules = "";
         if (scheduleID === "ALL") {
-          schedules = await db.Schedule.findAll();
+          schedules = await db.Schedule.findAll({
+            include: [
+              { model: db.Clinic },
+            ],
+          });
         }
         if (scheduleID && scheduleID !== "ALL") {
           schedules = await db.Schedule.findOne({
@@ -44,6 +48,9 @@ const scheduleServices = {
         if (MaBS) {
           schedules = await db.Schedule.findAll({
             where: { MaBS: MaBS },
+            include: [
+              { model: db.Clinic },
+            ],
           });
         }
         resolve(schedules);
@@ -70,6 +77,7 @@ const scheduleServices = {
   createNewSchedule: (data) => {
     return new Promise(async (resolve, reject) => {
       try {
+        console.log(data);
         let isSchedule = await db.Schedule.findOne({
           where: {
             MaBS: data.MaBS,
@@ -94,6 +102,7 @@ const scheduleServices = {
               errMessage: "Thêm thành công",
             });
           }).catch((err) => {
+            console.log(err);
             resolve({
               errCode: 1,
               errMessage: "Thêm thất bại",

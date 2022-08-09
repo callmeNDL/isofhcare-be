@@ -16,6 +16,38 @@ const doctorController = {
       doctors,
     });
   },
+  handleSearch: async (req, res) => {
+    let textSearch = req.query.textSearch;
+    if (!textSearch) {
+      return res.status(200).json({
+        errCode: 1,
+        errMessage: "Failed",
+        doctors: [],
+      });
+    }
+    let result = await doctorServices.searchDoctor(textSearch);
+    return res.status(200).json({
+      errCode: 0,
+      errMessage: "OK",
+      doctors: result,
+    });
+  },
+  handlePagination: async (req, res) => {
+    let page = req.query.page;
+    if (!page) {
+      return res.status(200).json({
+        errCode: 1,
+        errMessage: "Missing param",
+        doctors: [],
+      });
+    }
+    let result = await doctorServices.Pagination(page);
+    return res.status(200).json({
+      errCode: 0,
+      errMessage: "OK",
+      doctors: result,
+    });
+  },
   handleCheckExistDoctor: async (req, res) => {
     let message = await doctorServices.checkExistDoctor(req.body);
     return res.status(200).json(message);

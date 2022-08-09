@@ -16,6 +16,7 @@ module.exports = (sequelize, DataTypes) => {
     MaPK: DataTypes.STRING,
     TenPXN: DataTypes.STRING,
     KetQua: DataTypes.STRING,
+    HinhAnhXN: DataTypes.STRING,
     NgayXN: DataTypes.DATE,
     TrangThai: DataTypes.TEXT,
   }, {

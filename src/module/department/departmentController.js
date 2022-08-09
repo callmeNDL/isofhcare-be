@@ -16,6 +16,22 @@ const departmentController = {
       departments,
     });
   },
+  handleGetAllDoctor: async (req, res) => {
+    let MaKhoa = req.query.MaKhoa;
+    if (!MaKhoa) {
+      return res.status(200).json({
+        errCode: 1,
+        errMessage: "Missing MaKhoa",
+        doctors: [],
+      });
+    }
+    let doctors = await departmentServices.getDoctor(MaKhoa);
+    return res.status(200).json({
+      errCode: 0,
+      errMessage: "OK",
+      doctors,
+    });
+  },
   handleCreateNewDepartment: async (req, res) => {
     let message = await departmentServices.createNewDepartment(req.body);
     return res.status(200).json(message);

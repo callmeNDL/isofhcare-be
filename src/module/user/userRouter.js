@@ -5,6 +5,8 @@ let router = express.Router();
 
 router.get('/', userController.handleGetAllUsers);
 router.post('/create-user', userController.handleCreateNewUser);
+router.post('/change-password-user', userController.handleChangePassword);
+
 router.delete('/delete-user', userController.handleDeleteUser);
 router.put('/update-user', userController.handleUpdateUser);
 router.post('/check-user', userController.handleCheckExistUser);

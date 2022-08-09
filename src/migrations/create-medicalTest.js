@@ -32,6 +32,9 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
+      HinhAnhXN: {
+        type: Sequelize.STRING,
+      },
       NgayXN: {
         type: Sequelize.DATE
       },

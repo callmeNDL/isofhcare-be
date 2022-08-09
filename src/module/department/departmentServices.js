@@ -38,6 +38,21 @@ const departmentServices = {
       }
     });
   },
+  getDoctor: async (MaKhoa) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        let doctors = "";
+        if (MaKhoa) {
+          doctors = await db.Doctor.findAll({
+            where: { MaKhoa: MaKhoa },
+          });
+        }
+        resolve(doctors);
+      } catch (e) {
+        reject(e);
+      }
+    });
+  },
   createNewDepartment: async (data) => {
     return new Promise(async (resolve, reject) => {
       try {

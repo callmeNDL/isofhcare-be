@@ -16,6 +16,21 @@ const userController = {
       users,
     });
   },
+  handleChangePassword: async (req, res) => {
+    console.log(req.body);
+    let MaUser = req.body.MaUser;
+    let passwordOld = req.body.passwordOld;
+    let passwordNew = req.body.passwordNew;
+
+    if (!MaUser && !passwordOld && !passwordNew) {
+      return res.status(200).json({
+        errCode: 1,
+        errMessage: "Thiếu điều kiện đầu vào (id,password)",
+      });
+    }
+    let message = await userServices.changePassword(MaUser, passwordOld, passwordNew);
+    return res.status(200).json(message);
+  },
   handleCheckExistUser: async (req, res) => {
     let message = await userServices.checkExistUser(req.body);
     return res.status(200).json(message);

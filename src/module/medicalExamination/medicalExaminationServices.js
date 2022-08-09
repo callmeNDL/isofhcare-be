@@ -146,7 +146,18 @@ const medicalExaminationServices = {
               errMessage: `Phiếu khám có ${medicalTest.length} phiếu xét nghiệm`
             })
           } else {
-            await medicalExamination.destroy();
+            await medicalExamination.destroy().then(() => {
+              resolve({
+                errCode: 0,
+                errMessage: "Xoá thành công"
+              })
+            }).catch((err) => {
+              console.log(err);
+              resolve({
+                errCode: 1,
+                errMessage: "Xoá thất bại vì phiếu khám đã có đơn thuốc",
+              });
+            });;;
             resolve({
               errCode: 0,
               errMessage: "Xoá thành công"
