@@ -265,7 +265,29 @@ const userServices = {
           raw: false,
         });
         if (user) {
-          if (data.CMND === user.CMND) {
+          let checkEmail = await checkExist(data.email, "email");
+          let checkSDT = await checkExist(data.SDT, "SDT");
+          let checkCMND = await checkExist(data.CMND, "CMND");
+
+          if (user.email != data.email && checkEmail) {
+            resolve({
+              errCode: 1,
+              errMessage: "email đã tồn tại.",
+            });
+          }
+          if (user.SDT != data.SDT && checkSDT) {
+            resolve({
+              errCode: 1,
+              errMessage: "SDT đã tồn tại.",
+            });
+          }
+          if (user.CMND != data.CMND && checkCMND) {
+            resolve({
+              errCode: 1,
+              errMessage: "CMND đã tồn tại.",
+            });
+          }
+          else {
             user.MaChucVu = data.MaChucVu,
               user.HoTen = data.HoTen,
               user.NgaySinh = data.NgaySinh,
@@ -275,38 +297,21 @@ const userServices = {
               user.CMND = data.CMND,
               user.email = data.email,
               user.HinhAnh = data.HinhAnh,
-              await user.save();
-            resolve({
-              errCode: 0,
-              errMessage: "Cập nhật thành congp!"
-            })
-          } else {
-            let checkCMND = await checkExist(data.CMND, "CMND");
-            if (checkCMND === true) {
-              console.log("tồn tại");
-              resolve({
-                errCode: 1,
-                errMessage: "CMND đã tồn tại.",
+              await user.save().then(() => {
+                resolve({
+                  errCode: 0,
+                  errMessage: "Cập nhật thành công"
+                })
+              }).catch((err) => {
+                console.log(err);
+                resolve({
+                  errCode: 1,
+                  errMessage: "Cập nhật thất bại",
+                });
               });
-            } else {
-              user.MaChucVu = data.MaChucVu,
-                user.HoTen = data.HoTen,
-                user.NgaySinh = data.NgaySinh,
-                user.DiaChi = data.DiaChi,
-                user.GioiTinh = data.GioiTinh,
-                user.SDT = data.SDT,
-                user.CMND = data.CMND,
-                user.email = data.email,
-                user.HinhAnh = data.HinhAnh,
-                await user.save();
-              resolve({
-                errCode: 0,
-                errMessage: "Cập nhật thành công"
-              })
-            }
+
           }
         } else {
-
           resolve({
             errCode: 1,
             errMessage: "User not found!"

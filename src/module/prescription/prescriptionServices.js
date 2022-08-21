@@ -57,8 +57,12 @@ const prescriptionServices = {
           });
         }
         else {
+          let uid = Number((new Date().getTime()).toString().slice(-6));
+          if (uid <= 9999) {
+            uid + 10000
+          }
           await db.Prescription.create({
-            MaDT: data.MaDT,
+            MaDT: uid,
             MaPK: data.MaPK,
             MaBS: data.MaBS,
             MaUser: data.MaUser,
